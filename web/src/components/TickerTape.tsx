@@ -24,7 +24,7 @@ export function TickerTape({ snap }: { snap: Snapshot }) {
     </span>
   );
   return (
-    <div className="group relative overflow-hidden border-b border-rule bg-sunken" aria-label="Layer totals">
+    <div className="group relative h-full overflow-hidden" aria-label="Layer totals">
       <div className="flex w-max whitespace-nowrap py-1.5 pl-4 motion-safe:animate-[tape_70s_linear_infinite] group-hover:[animation-play-state:paused] group-focus-within:[animation-play-state:paused]">
         <div className="flex">
           {lead}

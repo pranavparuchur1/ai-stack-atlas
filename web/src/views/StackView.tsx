@@ -70,9 +70,7 @@ function TileView({ t, layer }: { t: Tile; layer: string }) {
   return (
     <button
       data-company={c.id}
-      aria-label={`${c.name}, ${usd(t.item.value)}${t.item.share < 1 ? ` (${Math.round(t.item.share * 100)}% segment share)` : ""}${
-        c.is_public ? `, ${pct(c.change)} today` : ", private, last round valuation"
-      }`}
+      aria-label={big || mid ? undefined : `${c.name}, ${usd(t.item.value)}`}
       aria-pressed={selected}
       onClick={() => select(c.id)}
       onMouseEnter={() => hover(c.id)}
@@ -101,16 +99,24 @@ function TileView({ t, layer }: { t: Tile; layer: string }) {
           <span className="flex items-baseline gap-1.5 text-[11px] leading-none">
             <span className="num text-ink">{usd(t.item.value)}</span>
             {c.is_public ? (
-              <span className={`num ${toneClass[tone(c.change)]}`}>{pct(c.change, 1)}</span>
+              // ink, not green/red: tile fills vary, so the sign carries direction legibly at any tint
+              <span className="num text-ink-2">{pct(c.change, 1)}</span>
             ) : (
               <span className="text-ink-3">last round</span>
             )}
             {t.item.share < 1 && <span className="num text-ink-3">{Math.round(t.item.share * 100)}%</span>}
           </span>
+          {t.item.share < 1 && <span className="sr-only"> segment share of market cap</span>}
         </span>
       )}
       {mid && (
-        <span className="block truncate p-1 font-cond text-[11px] leading-tight text-ink">{c.ticker && !c.ticker.includes(".") ? c.ticker : c.name}</span>
+        <span className="block truncate p-1 font-cond text-[11px] leading-tight text-ink">
+          {c.ticker && !c.ticker.includes(".") ? c.ticker : c.name}
+          <span className="sr-only">
+            {" "}
+            {c.name}, {usd(t.item.value)}
+          </span>
+        </span>
       )}
     </button>
   );

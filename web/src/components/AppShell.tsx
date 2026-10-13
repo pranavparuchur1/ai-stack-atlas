@@ -1,12 +1,15 @@
-import { type ReactNode, useEffect, useState } from "react";
-import { NavLink } from "react-router-dom";
+import { lazy, type ReactNode, Suspense, useEffect, useState } from "react";
+import { NavLink, useLocation } from "react-router-dom";
 import { useSnapshot } from "../data/api";
 import { ago } from "../lib/format";
 import { useUi, type Theme } from "../state/store";
 import { TickerTape } from "./TickerTape";
 import { StatusPill } from "./StatusPill";
-import { CompanyDrawer } from "./CompanyDrawer";
-import { LiveSettings } from "./LiveSettings";
+import { getKey } from "../live/finnhub";
+
+// panels that are closed on first paint load on demand
+const CompanyDrawer = lazy(() => import("./CompanyDrawer").then((m) => ({ default: m.CompanyDrawer })));
+const LiveSettings = lazy(() => import("./LiveSettings").then((m) => ({ default: m.LiveSettings })));
 
 const NAV = [
   { to: "/", label: "Stack", end: true },
@@ -63,7 +66,12 @@ function Segmented<T extends string>({
 
 export function AppShell({ children }: { children: ReactNode }) {
   const { data: snap } = useSnapshot();
-  const { attribution, setAttribution, theme, setTheme, setSettingsOpen } = useUi();
+  const { attribution, setAttribution, theme, setTheme, setSettingsOpen, settingsOpen, selectedId } = useUi();
+  const [liveWanted] = useState(() => getKey() != null);
+  const { pathname } = useLocation();
+  const select = useUi((s) => s.select);
+  // a company panel belongs to the view it was opened from
+  useEffect(() => select(null), [pathname, select]);
   const [, force] = useState(0);
   useEffect(() => {
     const t = setInterval(() => force((n) => n + 1), 60_000); // keep "updated N min ago" fresh
@@ -123,13 +131,16 @@ export function AppShell({ children }: { children: ReactNode }) {
             </button>
           </div>
         </div>
-        {snap && <TickerTape snap={snap} />}
+        {/* fixed-height slot so the page does not shift when the tape's data arrives */}
+        <div className="h-[29px] border-b border-rule bg-sunken">{snap && <TickerTape snap={snap} />}</div>
       </header>
       <main id="main" className="flex-1">
         {children}
       </main>
-      <CompanyDrawer />
-      <LiveSettings />
+      <Suspense fallback={null}>
+        {selectedId && <CompanyDrawer />}
+        {(settingsOpen || liveWanted) && <LiveSettings />}
+      </Suspense>
       <footer className="border-t border-rule px-4 py-2 text-[11px] text-ink-3">
         <span className="text-ink-2">Illustrative model, not a forecast or financial advice.</span>{" "}
         {snap && (
