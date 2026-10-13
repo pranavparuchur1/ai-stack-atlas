@@ -174,6 +174,11 @@ export function StackView() {
         <h1 id="stack-title" className="font-cond text-[18px] font-semibold text-ink">
           The AI stack, power to applications
         </h1>
+        {!snap ? (
+          <p className="text-ink-3" aria-live="polite">
+            Loading the latest snapshot…
+          </p>
+        ) : (
         <p className="text-ink-2">
           <span className="num text-ink">{usd(stackTotal)}</span> across {companies.length} companies ·{" "}
           {attribution === "primary"
@@ -187,6 +192,7 @@ export function StackView() {
             </>
           )}
         </p>
+        )}
       </div>
 
       {asTable && snap && <StackTable items={items} layers={snap.layers} />}
