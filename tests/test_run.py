@@ -23,7 +23,13 @@ def test_full_run_publishes_consistent_outputs(settings: Settings, fake_provider
     report = run_pipeline(settings, fake_provider, today=TODAY)
     assert report.ok, failed(report.checks)
     assert report.status == "passed_with_warnings"  # stale private valuations warn by design
-    assert set(report.outputs) == {"snapshot_latest.json", f"history/{TODAY}.json", "analytics.json", "prices_1y.json"}
+    assert set(report.outputs) == {
+        "snapshot_latest.json",
+        f"history/{TODAY}.json",
+        "analytics.json",
+        "prices_1y.json",
+        "model.json",
+    }
 
     snap = _read(settings, "snapshot_latest.json")
     total = sum(c["market_cap_usd"] for c in snap["companies"])

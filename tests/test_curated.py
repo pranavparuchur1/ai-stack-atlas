@@ -76,3 +76,18 @@ def test_missing_top_level_key(project: Path) -> None:
     (project / "data" / "edges.yaml").write_text("not_edges: []\n", encoding="utf-8")
     with pytest.raises(ValueError, match="'edges'"):
         load_curated(project / "data")
+
+
+def test_model_params_validate(tmp_path: Path) -> None:
+    from pipeline.extract.curated import load_model_params
+
+    params = load_model_params(ROOT / "config" / "model.yaml")
+    assert params.decay == 0.5 and params.max_hops == 3
+    bad = tmp_path / "m.yaml"
+    bad.write_text(
+        "elasticity: {}\ndecay: 0.5\nmax_hops: 3\nbeta_blend: 0.3\nvaluation_to_demand: 0.5\n"
+        "contract_years: 5\nnull_magnitude_share: 0.02\nmax_exposure: 1\n",
+        encoding="utf-8",
+    )
+    with pytest.raises(ValidationError, match="elasticity missing"):
+        load_model_params(bad)

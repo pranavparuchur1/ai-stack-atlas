@@ -141,6 +141,7 @@ def build_analytics(res: AnalyticsResult, order: list[str], layer_ids: list[str]
             day_returns={l: [sig(v, 4) or 0.0 for v in res.layer_returns[l].fillna(0)] for l in lids},
         ),
         beta={cid: {l: sig(res.beta.at[cid, l], 4) for l in lids} for cid in ids},
+        corr_to_layer={cid: {l: sig(res.corr_to_layer.at[cid, l], 4) for l in lids} for cid in ids},
         layer_correlation={a: {b: sig(res.layer_correlation.at[a, b], 4) for b in lids} for a in lids},
         vol_60d={cid: sig(res.vol.get(cid), 4) for cid in ids},
         layer_vol_60d={l: sig(res.layer_vol.get(l), 4) for l in lids},

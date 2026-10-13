@@ -1,0 +1,26 @@
+# Parameters of the shock-propagation model (docs/methodology.md). The pipeline copies
+# this file to web/public/data/model.json; the simulator's sliders start from these values.
+# Every number here is a MODEL ASSUMPTION, not data - change them and watch the results move.
+
+# Fraction of a shock that passes along an edge, per relation type and direction.
+#   up:   a demand/valuation signal travelling from a customer to its supplier
+#   down: a supply disruption travelling from a supplier to its customer
+elasticity:
+  compute_contract:         {up: 0.8, down: 0.3}
+  chip_supply:              {up: 0.9, down: 0.6}
+  memory_supply:            {up: 0.9, down: 0.5}
+  foundry:                  {up: 0.8, down: 0.9}
+  equipment_supply:         {up: 0.6, down: 0.3}
+  power_ppa:                {up: 0.4, down: 0.4}
+  cloud_hosting:            {up: 0.7, down: 0.4}
+  distribution_partnership: {up: 0.3, down: 0.2}
+  revenue_customer:         {up: 0.7, down: 0.3}
+  equity_stake:             {up: 1.0, down: 0.0}   # mark-to-market is mechanical (elasticity 1)
+
+decay: 0.5            # multiplier per extra hop beyond the first
+max_hops: 3
+beta_blend: 0.3       # weight of the empirical (beta) channel in second-order hops
+valuation_to_demand: 0.2   # a +10% valuation move is read as a +2% demand signal for its suppliers (calibrated in backtests)
+contract_years: 5     # multi-year contract totals are annualised over this many years
+null_magnitude_share: 0.02 # undisclosed contract -> assumed 2% of the supplier's revenue (labelled as an assumption)
+max_exposure: 1.0     # cap on (annual contract / revenue)

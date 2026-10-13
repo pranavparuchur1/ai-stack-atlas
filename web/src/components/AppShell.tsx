@@ -5,6 +5,7 @@ import { ago } from "../lib/format";
 import { useUi, type Theme } from "../state/store";
 import { TickerTape } from "./TickerTape";
 import { StatusPill } from "./StatusPill";
+import { CompanyDrawer } from "./CompanyDrawer";
 
 const NAV = [
   { to: "/", label: "Stack", end: true },
@@ -126,6 +127,7 @@ export function AppShell({ children }: { children: ReactNode }) {
       <main id="main" className="flex-1">
         {children}
       </main>
+      <CompanyDrawer />
       <footer className="border-t border-rule px-4 py-2 text-[11px] text-ink-3">
         <span className="text-ink-2">Illustrative model, not a forecast or financial advice.</span>{" "}
         {snap && (

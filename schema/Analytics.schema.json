@@ -95,6 +95,23 @@
       "title": "Beta",
       "type": "object"
     },
+    "corr_to_layer": {
+      "additionalProperties": {
+        "additionalProperties": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "type": "object"
+      },
+      "title": "Corr To Layer",
+      "type": "object"
+    },
     "layer_correlation": {
       "additionalProperties": {
         "additionalProperties": {
@@ -176,6 +193,7 @@
     "correlation",
     "layer_index",
     "beta",
+    "corr_to_layer",
     "layer_correlation",
     "vol_60d",
     "layer_vol_60d",

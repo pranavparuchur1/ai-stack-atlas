@@ -30,6 +30,7 @@ class AnalyticsResult:
     total_return: pd.Series
     layer_total_return: pd.Series
     layer_correlation: pd.DataFrame
+    corr_to_layer: pd.DataFrame  # company x layer
 
 
 def wide_caps(caps: pd.DataFrame, start: date, min_coverage: float = 0.5) -> pd.DataFrame:
@@ -59,6 +60,14 @@ def _beta(x: pd.Series, m: pd.Series, min_obs: int = 60) -> float | None:
         return None
     var = m[ok].var()
     return float(x[ok].cov(m[ok]) / var) if var > 0 else None
+
+
+def _corr(x: pd.Series, m: pd.Series, min_obs: int = 60) -> float | None:
+    ok = x.notna() & m.notna()
+    if ok.sum() < min_obs:
+        return None
+    c = x[ok].corr(m[ok])
+    return None if pd.isna(c) else float(c)
 
 
 def compute(caps: pd.DataFrame, primary: dict[str, str], start: date, vol_window: int = 60) -> AnalyticsResult:
@@ -94,4 +103,7 @@ def compute(caps: pd.DataFrame, primary: dict[str, str], start: date, vol_window
         total_return=last / first - 1,
         layer_total_return=levels.iloc[-1] / 100 - 1 if len(levels) else pd.Series(dtype=float),
         layer_correlation=layer_r.corr(min_periods=60),
+        corr_to_layer=pd.DataFrame(
+            {lid: {cid: _corr(rets[cid], layer_r[lid]) for cid in rets.columns} for lid in layer_r.columns}
+        ),
     )

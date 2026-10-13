@@ -287,11 +287,39 @@ class Analytics(BaseModel):
     correlation: list[list[float | None]]
     layer_index: LayerIndexSeries
     beta: dict[str, dict[str, float | None]]
+    corr_to_layer: dict[str, dict[str, float | None]]
     layer_correlation: dict[str, dict[str, float | None]]
     vol_60d: dict[str, float | None]
     layer_vol_60d: dict[str, float | None]
     return_1y: dict[str, float | None]
     layer_return_1y: dict[str, float | None]
+
+
+class Elasticity(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+    up: float = Field(ge=0, le=2)
+    down: float = Field(ge=0, le=2)
+
+
+class ModelParams(BaseModel):
+    """Propagation-model parameters (config/model.yaml -> model.json)."""
+
+    model_config = ConfigDict(extra="forbid")
+    elasticity: dict[RelationType, Elasticity]
+    decay: float = Field(ge=0, le=1)
+    max_hops: int = Field(ge=1, le=5)
+    beta_blend: float = Field(ge=0, le=1)
+    valuation_to_demand: float = Field(ge=0, le=2)
+    contract_years: float = Field(gt=0)
+    null_magnitude_share: float = Field(ge=0, le=1)
+    max_exposure: float = Field(gt=0)
+
+    @model_validator(mode="after")
+    def _all_relations(self) -> ModelParams:
+        missing = set(RelationType) - set(self.elasticity)
+        if missing:
+            raise ValueError(f"elasticity missing for {sorted(missing)}")
+        return self
 
 
 class PriceSeries(BaseModel):

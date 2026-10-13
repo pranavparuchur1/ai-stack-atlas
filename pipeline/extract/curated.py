@@ -7,7 +7,7 @@ from typing import Any
 
 import yaml
 
-from pipeline.models import Company, Curated, Edge, Layer, PrivateValuation, SegmentSplit
+from pipeline.models import Company, Curated, Edge, Layer, ModelParams, PrivateValuation, SegmentSplit
 
 
 def _read(path: Path, key: str) -> list[dict[str, Any]]:
@@ -29,3 +29,8 @@ def load_curated(data_dir: Path) -> Curated:
         edges=[Edge(**r) for r in _read(data_dir / "edges.yaml", "edges")],
         segments=[SegmentSplit(**r) for r in _read(data_dir / "segments.yaml", "segments")],
     )
+
+
+def load_model_params(path: Path) -> ModelParams:
+    """Validate config/model.yaml (propagation-model assumptions published as model.json)."""
+    return ModelParams(**(yaml.safe_load(path.read_text(encoding="utf-8")) or {}))

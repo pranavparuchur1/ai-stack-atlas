@@ -11,7 +11,7 @@ import pandas as pd
 
 from pipeline import __version__
 from pipeline.config import Settings
-from pipeline.extract.curated import load_curated
+from pipeline.extract.curated import load_curated, load_model_params
 from pipeline.extract.providers.base import MarketDataProvider, QuoteProvider
 from pipeline.frames import records
 from pipeline.load.snapshot import build_analytics, build_prices, build_snapshot, write_json
@@ -207,6 +207,7 @@ def run_pipeline(
                 "analytics.json": build_analytics(res, order, layer_ids),
                 "prices_1y.json": build_prices(res, closes),
             }
+            files["model.json"] = load_model_params(st.config_dir / "model.yaml")
             for name, model in files.items():
                 write_json(st.out_dir / name, model)
                 outputs.append(name)

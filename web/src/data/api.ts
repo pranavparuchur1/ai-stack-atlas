@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import type { Analytics, Lineage, PriceSeries, Snapshot } from "../types";
-import type { Backtests } from "../engine/types";
+import type { Backtests, ModelParams } from "../engine/types";
 
 const BASE = `${import.meta.env.BASE_URL}data/`;
 
@@ -18,3 +18,5 @@ export const usePrices = () => useQuery({ queryKey: ["prices"], queryFn: () => g
 export const useLineage = () =>
   useQuery({ queryKey: ["lineage"], queryFn: () => getJson<Lineage>("lineage.json"), refetchInterval: 300_000 });
 export const useBacktests = () => useQuery({ queryKey: ["backtests"], queryFn: () => getJson<Backtests>("backtests.json") });
+export const useModelParams = () =>
+  useQuery({ queryKey: ["model"], queryFn: () => getJson<ModelParams>("model.json"), staleTime: Infinity });

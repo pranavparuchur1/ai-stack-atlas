@@ -1,0 +1,109 @@
+{
+  "$defs": {
+    "Elasticity": {
+      "additionalProperties": false,
+      "properties": {
+        "up": {
+          "maximum": 2,
+          "minimum": 0,
+          "title": "Up",
+          "type": "number"
+        },
+        "down": {
+          "maximum": 2,
+          "minimum": 0,
+          "title": "Down",
+          "type": "number"
+        }
+      },
+      "required": [
+        "up",
+        "down"
+      ],
+      "title": "Elasticity",
+      "type": "object"
+    },
+    "RelationType": {
+      "enum": [
+        "equity_stake",
+        "compute_contract",
+        "chip_supply",
+        "memory_supply",
+        "foundry",
+        "equipment_supply",
+        "power_ppa",
+        "cloud_hosting",
+        "distribution_partnership",
+        "revenue_customer"
+      ],
+      "title": "RelationType",
+      "type": "string"
+    }
+  },
+  "additionalProperties": false,
+  "description": "Propagation-model parameters (config/model.yaml -> model.json).",
+  "properties": {
+    "elasticity": {
+      "additionalProperties": {
+        "$ref": "#/$defs/Elasticity"
+      },
+      "propertyNames": {
+        "$ref": "#/$defs/RelationType"
+      },
+      "title": "Elasticity",
+      "type": "object"
+    },
+    "decay": {
+      "maximum": 1,
+      "minimum": 0,
+      "title": "Decay",
+      "type": "number"
+    },
+    "max_hops": {
+      "maximum": 5,
+      "minimum": 1,
+      "title": "Max Hops",
+      "type": "integer"
+    },
+    "beta_blend": {
+      "maximum": 1,
+      "minimum": 0,
+      "title": "Beta Blend",
+      "type": "number"
+    },
+    "valuation_to_demand": {
+      "maximum": 2,
+      "minimum": 0,
+      "title": "Valuation To Demand",
+      "type": "number"
+    },
+    "contract_years": {
+      "exclusiveMinimum": 0,
+      "title": "Contract Years",
+      "type": "number"
+    },
+    "null_magnitude_share": {
+      "maximum": 1,
+      "minimum": 0,
+      "title": "Null Magnitude Share",
+      "type": "number"
+    },
+    "max_exposure": {
+      "exclusiveMinimum": 0,
+      "title": "Max Exposure",
+      "type": "number"
+    }
+  },
+  "required": [
+    "elasticity",
+    "decay",
+    "max_hops",
+    "beta_blend",
+    "valuation_to_demand",
+    "contract_years",
+    "null_magnitude_share",
+    "max_exposure"
+  ],
+  "title": "ModelParams",
+  "type": "object"
+}

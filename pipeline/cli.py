@@ -12,7 +12,7 @@ from pathlib import Path
 from pipeline.config import ROOT, Settings
 from pipeline.extract.curated import load_curated
 from pipeline.extract.providers import quote_providers
-from pipeline.models import Analytics, CheckStatus, Lineage, PriceSeries, Snapshot
+from pipeline.models import Analytics, CheckStatus, Lineage, ModelParams, PriceSeries, Snapshot
 from pipeline.validate.checks import curated_checks
 
 ICON = {CheckStatus.pass_: "PASS", CheckStatus.warn: "WARN", CheckStatus.fail: "FAIL"}
@@ -54,7 +54,7 @@ def cmd_check(_: argparse.Namespace) -> int:
 def cmd_export_schema(args: argparse.Namespace) -> int:
     out = Path(args.out)
     out.mkdir(parents=True, exist_ok=True)
-    for model in (Snapshot, Analytics, PriceSeries, Lineage):
+    for model in (Snapshot, Analytics, PriceSeries, Lineage, ModelParams):
         (out / f"{model.__name__}.schema.json").write_text(
             json.dumps(model.model_json_schema(mode="serialization"), indent=2) + "\n", encoding="utf-8"
         )

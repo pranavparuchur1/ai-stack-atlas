@@ -14,6 +14,7 @@ export interface Analytics {
   correlation: Correlation;
   layer_index: LayerIndexSeries;
   beta: Beta;
+  corr_to_layer: CorrToLayer;
   layer_correlation: LayerCorrelation;
   vol_60d: Vol60D;
   layer_vol_60d: LayerVol60D;
@@ -32,6 +33,11 @@ export interface DayReturns {
   [k: string]: number[];
 }
 export interface Beta {
+  [k: string]: {
+    [k: string]: number | null;
+  };
+}
+export interface CorrToLayer {
   [k: string]: {
     [k: string]: number | null;
   };
