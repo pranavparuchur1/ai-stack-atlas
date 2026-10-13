@@ -1,0 +1,176 @@
+@import "tailwindcss";
+
+/*
+ * Design tokens. Concept: a geological cross-section of the AI economy.
+ * Each layer is a stratum with its own colour; the seven colours alternate dark/light
+ * band to band (like real strata), which is also what makes adjacent layers separable
+ * for colour-vision deficiency. The palette was validated with the dataviz skill's
+ * validator (lightness band, chroma floor, adjacent CVD dE, normal-vision floor,
+ * contrast) for BOTH surfaces - see docs/methodology.md#design.
+ */
+:root {
+  color-scheme: light;
+  --surface: #f6f5f1;
+  --surface-raised: #ffffff;
+  --surface-sunken: #eceae4;
+  --rule: #d9d6cd;
+  --rule-strong: #b9b5aa;
+  --ink: #15171a;
+  --ink-2: #4b5058;
+  --ink-3: #7a7f86;
+  --focus: #0064a8;
+  --up: #1d7a3a;
+  --down: #b3261e;
+  --warn: #9a6400;
+  --layer-power: #915200;
+  --layer-infra: #ea856b;
+  --layer-semicap: #973f6e;
+  --layer-chips: #ab93ed;
+  --layer-cloud: #006aa5;
+  --layer-models: #00beaf;
+  --layer-apps: #40731a;
+  --tile-alpha: 22%;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    color-scheme: dark;
+    --surface: #0d0f12;
+    --surface-raised: #14171b;
+    --surface-sunken: #090a0c;
+    --rule: #22262c;
+    --rule-strong: #353a42;
+    --ink: #e8eaec;
+    --ink-2: #a3a9b1;
+    --ink-3: #6f7680;
+    --focus: #6fb3ff;
+    --up: #4cc47a;
+    --down: #ff6b5e;
+    --warn: #e0a83a;
+    --layer-power: #975800;
+    --layer-infra: #d5725a;
+    --layer-semicap: #9e4573;
+    --layer-chips: #9881d9;
+    --layer-cloud: #0070ab;
+    --layer-models: #00ab9d;
+    --layer-apps: #467922;
+    --tile-alpha: 30%;
+  }
+}
+
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --surface: #0d0f12;
+  --surface-raised: #14171b;
+  --surface-sunken: #090a0c;
+  --rule: #22262c;
+  --rule-strong: #353a42;
+  --ink: #e8eaec;
+  --ink-2: #a3a9b1;
+  --ink-3: #6f7680;
+  --focus: #6fb3ff;
+  --up: #4cc47a;
+  --down: #ff6b5e;
+  --warn: #e0a83a;
+  --layer-power: #975800;
+  --layer-infra: #d5725a;
+  --layer-semicap: #9e4573;
+  --layer-chips: #9881d9;
+  --layer-cloud: #0070ab;
+  --layer-models: #00ab9d;
+  --layer-apps: #467922;
+  --tile-alpha: 30%;
+}
+
+@theme inline {
+  --color-surface: var(--surface);
+  --color-raised: var(--surface-raised);
+  --color-sunken: var(--surface-sunken);
+  --color-rule: var(--rule);
+  --color-rule-strong: var(--rule-strong);
+  --color-ink: var(--ink);
+  --color-ink-2: var(--ink-2);
+  --color-ink-3: var(--ink-3);
+  --color-up: var(--up);
+  --color-down: var(--down);
+  --color-warn: var(--warn);
+  --color-focus: var(--focus);
+  --font-sans: "IBM Plex Sans", ui-sans-serif, system-ui, sans-serif;
+  --font-cond: "IBM Plex Sans Condensed", "IBM Plex Sans", ui-sans-serif, sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--surface);
+  color: var(--ink);
+  font-family: var(--font-sans);
+  font-size: 13px;
+  line-height: 1.45;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* numerals are always tabular so columns of figures align */
+.num {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums slashed-zero;
+  letter-spacing: -0.01em;
+}
+
+:focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: 1px;
+}
+
+/* hairline section label: small, letter-spaced, but NOT all-caps shouting */
+.label {
+  font-family: var(--font-cond);
+  font-size: 11px;
+  letter-spacing: 0.04em;
+  color: var(--ink-3);
+}
+
+/* live-tick flash: the only ambient motion besides the shock ripple */
+@keyframes tick-up {
+  from {
+    background-color: color-mix(in srgb, var(--up) 35%, transparent);
+  }
+}
+@keyframes tick-down {
+  from {
+    background-color: color-mix(in srgb, var(--down) 35%, transparent);
+  }
+}
+.flash-up {
+  animation: tick-up 900ms ease-out;
+}
+.flash-down {
+  animation: tick-down 900ms ease-out;
+}
+
+@keyframes tape {
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+.scrollbar-thin {
+  scrollbar-width: thin;
+  scrollbar-color: var(--rule-strong) transparent;
+}

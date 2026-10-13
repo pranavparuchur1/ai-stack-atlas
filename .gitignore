@@ -29,3 +29,7 @@ web/playwright-report/
 Thumbs.db
 .vscode/
 .idea/
+
+# local tooling
+.claude/
+web/.claude/
