@@ -1,0 +1,230 @@
+{
+  "$defs": {
+    "BacktestCompany": {
+      "properties": {
+        "id": {
+          "title": "Id",
+          "type": "string"
+        },
+        "cap_before": {
+          "title": "Cap Before",
+          "type": "number"
+        },
+        "actual": {
+          "additionalProperties": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "title": "Actual",
+          "type": "object"
+        }
+      },
+      "required": [
+        "id",
+        "cap_before",
+        "actual"
+      ],
+      "title": "BacktestCompany",
+      "type": "object"
+    },
+    "BacktestEvent": {
+      "properties": {
+        "id": {
+          "title": "Id",
+          "type": "string"
+        },
+        "name": {
+          "title": "Name",
+          "type": "string"
+        },
+        "date": {
+          "format": "date",
+          "title": "Date",
+          "type": "string"
+        },
+        "effective_date": {
+          "format": "date",
+          "title": "Effective Date",
+          "type": "string"
+        },
+        "description": {
+          "title": "Description",
+          "type": "string"
+        },
+        "source_url": {
+          "title": "Source Url",
+          "type": "string"
+        },
+        "prior_source_url": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Prior Source Url"
+        },
+        "scenario": {
+          "$ref": "#/$defs/ScenarioSpec"
+        },
+        "companies": {
+          "items": {
+            "$ref": "#/$defs/BacktestCompany"
+          },
+          "title": "Companies",
+          "type": "array"
+        },
+        "edge_ids": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Edge Ids",
+          "type": "array"
+        },
+        "revenue": {
+          "additionalProperties": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "title": "Revenue",
+          "type": "object"
+        }
+      },
+      "required": [
+        "id",
+        "name",
+        "date",
+        "effective_date",
+        "description",
+        "source_url",
+        "prior_source_url",
+        "scenario",
+        "companies",
+        "edge_ids",
+        "revenue"
+      ],
+      "title": "BacktestEvent",
+      "type": "object"
+    },
+    "ScenarioSpec": {
+      "additionalProperties": false,
+      "properties": {
+        "company_id": {
+          "pattern": "^[a-z0-9]+$",
+          "title": "Company Id",
+          "type": "string"
+        },
+        "type": {
+          "$ref": "#/$defs/ShockType"
+        },
+        "pct": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Pct"
+        },
+        "valuation_usd": {
+          "anyOf": [
+            {
+              "exclusiveMinimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Valuation Usd"
+        },
+        "prior_valuation_usd": {
+          "anyOf": [
+            {
+              "exclusiveMinimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Prior Valuation Usd"
+        }
+      },
+      "required": [
+        "company_id",
+        "type"
+      ],
+      "title": "ScenarioSpec",
+      "type": "object"
+    },
+    "ShockType": {
+      "enum": [
+        "ipo",
+        "valuation_change",
+        "earnings_beat_miss",
+        "supply_shock",
+        "demand_shock"
+      ],
+      "title": "ShockType",
+      "type": "string"
+    }
+  },
+  "properties": {
+    "generated_at": {
+      "format": "date-time",
+      "title": "Generated At",
+      "type": "string"
+    },
+    "spec_hash": {
+      "title": "Spec Hash",
+      "type": "string"
+    },
+    "benchmark": {
+      "title": "Benchmark",
+      "type": "string"
+    },
+    "windows": {
+      "items": {
+        "type": "integer"
+      },
+      "title": "Windows",
+      "type": "array"
+    },
+    "events": {
+      "items": {
+        "$ref": "#/$defs/BacktestEvent"
+      },
+      "title": "Events",
+      "type": "array"
+    }
+  },
+  "required": [
+    "generated_at",
+    "spec_hash",
+    "benchmark",
+    "windows",
+    "events"
+  ],
+  "title": "Backtests",
+  "type": "object"
+}

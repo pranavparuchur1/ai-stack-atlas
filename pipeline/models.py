@@ -7,6 +7,7 @@ shapes consumed by the web app are exported as JSON Schema from here
 
 from __future__ import annotations
 
+import datetime as dt
 from datetime import date, datetime
 from enum import StrEnum
 from typing import Annotated
@@ -320,6 +321,67 @@ class ModelParams(BaseModel):
         if missing:
             raise ValueError(f"elasticity missing for {sorted(missing)}")
         return self
+
+
+class ShockType(StrEnum):
+    ipo = "ipo"
+    valuation_change = "valuation_change"
+    earnings_beat_miss = "earnings_beat_miss"
+    supply_shock = "supply_shock"
+    demand_shock = "demand_shock"
+
+
+class ScenarioSpec(_Strict):
+    company_id: CompanyId
+    type: ShockType
+    pct: float | None = None
+    valuation_usd: float | None = Field(default=None, gt=0)
+    prior_valuation_usd: float | None = Field(default=None, gt=0)
+
+
+class BacktestEventSpec(_Strict):
+    id: str
+    name: str
+    date: dt.date
+    effective_date: dt.date
+    description: str
+    source_url: HttpUrl
+    prior_source_url: HttpUrl | None = None
+    scenario: ScenarioSpec
+
+    @model_validator(mode="after")
+    def _effective_after_date(self) -> BacktestEventSpec:
+        if self.effective_date < self.date:
+            raise ValueError(f"{self.id}: effective_date before date")
+        return self
+
+
+class BacktestCompany(BaseModel):
+    id: str
+    cap_before: float
+    actual: dict[str, float | None]
+
+
+class BacktestEvent(BaseModel):
+    id: str
+    name: str
+    date: dt.date
+    effective_date: dt.date
+    description: str
+    source_url: str
+    prior_source_url: str | None
+    scenario: ScenarioSpec
+    companies: list[BacktestCompany]
+    edge_ids: list[str]
+    revenue: dict[str, float | None]
+
+
+class Backtests(BaseModel):
+    generated_at: datetime
+    spec_hash: str
+    benchmark: str
+    windows: list[int]
+    events: list[BacktestEvent]
 
 
 class PriceSeries(BaseModel):

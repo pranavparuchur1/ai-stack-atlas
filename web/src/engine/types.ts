@@ -81,29 +81,5 @@ export interface PropagationResult {
 export type Betas = Record<string, Record<string, number | null>>;
 
 // ------------------------------------------------------------------ backtests
-export interface BacktestCompany {
-  id: string;
-  cap_before: number;
-  /** market-adjusted returns (vs SPY) over each window, e.g. {"1": 0.034, "3": ..., "5": ...} */
-  actual: Record<string, number | null>;
-}
-
-export interface BacktestEvent {
-  id: string;
-  name: string;
-  date: string;
-  description: string;
-  source_url: string;
-  scenario: Scenario;
-  /** observed move of the shocked company itself (if listed), used as the shock size */
-  companies: BacktestCompany[];
-  edge_ids: string[];
-  revenue: Record<string, number | null>;
-}
-
-export interface Backtests {
-  generated_at: string;
-  benchmark: string;
-  windows: number[];
-  events: BacktestEvent[];
-}
+// Shapes come from the pipeline's Pydantic models (schema/Backtests.schema.json).
+export type { Backtests, BacktestEvent, BacktestCompany } from "../types/generated/Backtests";

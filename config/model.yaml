@@ -20,7 +20,7 @@ elasticity:
 decay: 0.5            # multiplier per extra hop beyond the first
 max_hops: 3
 beta_blend: 0.3       # weight of the empirical (beta) channel in second-order hops
-valuation_to_demand: 0.2   # a +10% valuation move is read as a +2% demand signal for its suppliers (calibrated in backtests)
+valuation_to_demand: 0.1   # a +10% valuation move is read as a +1% demand signal for its suppliers (0.05-0.1 scored best in backtests)
 contract_years: 5     # multi-year contract totals are annualised over this many years
 null_magnitude_share: 0.02 # undisclosed contract -> assumed 2% of the supplier's revenue (labelled as an assumption)
 max_exposure: 1.0     # cap on (annual contract / revenue)

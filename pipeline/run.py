@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import json
 import logging
 import time
 from dataclasses import dataclass, field
@@ -16,9 +17,19 @@ from pipeline.extract.providers.base import MarketDataProvider, QuoteProvider
 from pipeline.frames import records
 from pipeline.load.snapshot import build_analytics, build_prices, build_snapshot, write_json
 from pipeline.load.warehouse import Warehouse
-from pipeline.models import CheckResult, CheckStatus, Curated, Lineage, LineageNode, SourceInfo
+from pipeline.models import (
+    BacktestEventSpec,
+    Backtests,
+    CheckResult,
+    CheckStatus,
+    Curated,
+    Lineage,
+    LineageNode,
+    SourceInfo,
+)
 from pipeline.transform import analytics as an
 from pipeline.transform.attribution import layer_totals, segment_shares
+from pipeline.transform.backtest_inputs import build_backtests, load_events
 from pipeline.transform.market_cap import attach_fx, fx_lookup, latest_marks, market_caps, private_marks
 from pipeline.validate import checks as ck
 
@@ -208,6 +219,9 @@ def run_pipeline(
                 "prices_1y.json": build_prices(res, closes),
             }
             files["model.json"] = load_model_params(st.config_dir / "model.yaml")
+            bt = _backtests(st, cur, provider, funds, today, wh)
+            if bt is not None:
+                files["backtests.json"] = bt
             for name, model in files.items():
                 write_json(st.out_dir / name, model)
                 outputs.append(name)
@@ -240,6 +254,49 @@ def run_pipeline(
         return RunReport(run_id=run_id, status=status, checks=results, row_counts=row_counts, outputs=outputs)
     finally:
         wh.close()
+
+
+def _store_events(wh: Warehouse, specs: list[BacktestEventSpec]) -> None:
+    """Saved scenarios live in the warehouse `events` table (the curated backtest events seed it)."""
+    wh.replace_all(
+        "events",
+        pd.DataFrame(
+            [
+                {
+                    "id": s.id,
+                    "name": s.name,
+                    "type": s.scenario.type.value,
+                    "params": s.scenario.model_dump_json(exclude_none=True),
+                    "created_at": pd.Timestamp(s.date),
+                }
+                for s in specs
+            ]
+        ),
+    )
+
+
+def _backtests(
+    st: Settings, cur: Curated, provider: MarketDataProvider, funds: pd.DataFrame, today: date, wh: Warehouse
+) -> Backtests | None:
+    """Historical inputs are static, so they are rebuilt only when backtest_events.yaml changes."""
+    spec_path = st.data_dir / "backtest_events.yaml"
+    if not spec_path.exists():
+        return None
+    specs, spec_hash = load_events(spec_path)
+    _store_events(wh, specs)
+    out = st.out_dir / "backtests.json"
+    if out.exists():
+        try:
+            if json.loads(out.read_text(encoding="utf-8")).get("spec_hash") == spec_hash:
+                return None
+        except ValueError:
+            pass
+    shares = {str(r["company_id"]): float(r["shares"]) for r in records(funds) if pd.notna(r["shares"])}
+    revenue = {
+        str(r["company_id"]): (float(r["revenue_ttm_usd"]) if pd.notna(r["revenue_ttm_usd"]) else None)
+        for r in records(funds)
+    }
+    return build_backtests(specs, spec_hash, cur, provider, shares, revenue, today)
 
 
 def _lineage(

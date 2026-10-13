@@ -1,3 +1,4 @@
+import { motion, useReducedMotion } from "framer-motion";
 import { memo, useState } from "react";
 import { usd } from "../lib/format";
 import { layerFill, layerVar } from "../lib/layers";
@@ -25,9 +26,26 @@ interface Props {
   edgeOpacity?: (e: SnapshotEdge) => number;
   onSelect: (id: string) => void;
   ariaLabel: string;
+  /** ids that emit a one-shot expanding ring (the simulator's shock ripple); change `pulseKey` to replay */
+  pulse?: string[];
+  pulseKey?: string | number;
 }
 
-function NetworkGraphImpl({ layout, edges, layers, width, height, selectedId, decorate, edgeOpacity, onSelect, ariaLabel }: Props) {
+function NetworkGraphImpl({
+  layout,
+  edges,
+  layers,
+  width,
+  height,
+  selectedId,
+  decorate,
+  edgeOpacity,
+  onSelect,
+  ariaLabel,
+  pulse,
+  pulseKey,
+}: Props) {
+  const reduce = useReducedMotion();
   const [hoverEdge, setHoverEdge] = useState<{ e: SnapshotEdge; x: number; y: number } | null>(null);
   const [hoverNode, setHoverNode] = useState<{ id: string; x: number; y: number } | null>(null);
   const { byId, laneY, laneH } = layout;
@@ -74,6 +92,27 @@ function NetworkGraphImpl({ layout, edges, layers, width, height, selectedId, de
             );
           })}
         </g>
+        {!reduce && pulse && (
+          <g pointerEvents="none" aria-hidden>
+            {pulse.map((id) => {
+              const n = byId.get(id);
+              if (!n) return null;
+              return (
+                <motion.circle
+                  key={`${pulseKey}-${id}`}
+                  cx={n.x}
+                  cy={n.y}
+                  fill="none"
+                  stroke={layerVar(n.c.primary_layer)}
+                  strokeWidth={2}
+                  initial={{ r: n.r, opacity: 0.9 }}
+                  animate={{ r: n.r + 22, opacity: 0 }}
+                  transition={{ duration: 0.9, ease: "easeOut" }}
+                />
+              );
+            })}
+          </g>
+        )}
         <g>
           {layout.nodes.map((n) => {
             const dec = decorate?.(n.id) ?? {};

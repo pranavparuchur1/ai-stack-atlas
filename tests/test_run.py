@@ -29,6 +29,7 @@ def test_full_run_publishes_consistent_outputs(settings: Settings, fake_provider
         "analytics.json",
         "prices_1y.json",
         "model.json",
+        "backtests.json",
     }
 
     snap = _read(settings, "snapshot_latest.json")
@@ -57,7 +58,9 @@ def test_rerun_is_idempotent_and_incremental(settings: Settings) -> None:
     first = run_pipeline(settings, p, today=TODAY)
     second = run_pipeline(settings, p, today=TODAY)
     assert first.row_counts == second.row_counts
-    cold_start, warm_start = p.history_calls[0][0], p.history_calls[1][0]
+    # first run: 1 incremental fetch + 1 per backtest event; second run: incremental fetch only
+    n_events = 3
+    cold_start, warm_start = p.history_calls[0][0], p.history_calls[1 + n_events][0]
     assert cold_start == TODAY - timedelta(days=settings.history_days)
     assert warm_start == TODAY - timedelta(days=settings.refetch_overlap_days)
 
