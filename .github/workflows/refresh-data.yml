@@ -1,0 +1,75 @@
+name: refresh-data
+
+# Refreshes market data every 30 minutes during US market hours (13:00-21:00 UTC covers
+# 9:30-16:00 ET across DST) and commits snapshots to the `data` branch, keeping `main`'s
+# history clean. deploy.yml picks the new snapshot up via `workflow_run`.
+on:
+  schedule:
+    - cron: "*/30 13-21 * * 1-5"
+  workflow_dispatch:
+
+concurrency:
+  group: refresh-data
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: astral-sh/setup-uv@v6
+        with:
+          enable-cache: true
+
+      - run: uv sync --frozen
+
+      - name: Restore DuckDB warehouse (incremental loads)
+        uses: actions/cache/restore@v4
+        with:
+          path: data/warehouse
+          key: warehouse-${{ github.run_id }}
+          restore-keys: warehouse-
+
+      - name: Restore published history from the data branch
+        run: |
+          if git fetch --depth=1 origin data 2>/dev/null; then
+            git checkout FETCH_HEAD -- web/public/data
+          fi
+
+      - name: Run pipeline (fails on any FAIL-level data-quality check)
+        env:
+          FINNHUB_API_KEY: ${{ secrets.FINNHUB_API_KEY }}
+          POLYGON_API_KEY: ${{ secrets.POLYGON_API_KEY }}
+        run: uv run pipeline run
+
+      - name: Save DuckDB warehouse
+        if: always()
+        uses: actions/cache/save@v4
+        with:
+          path: data/warehouse
+          key: warehouse-${{ github.run_id }}
+
+      - name: Commit snapshot to the data branch
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          cp -r web/public/data "$RUNNER_TEMP/published"
+          if git fetch origin data 2>/dev/null; then
+            git worktree add "$RUNNER_TEMP/data" FETCH_HEAD
+            git -C "$RUNNER_TEMP/data" checkout -B data
+          else
+            git worktree add --orphan -b data "$RUNNER_TEMP/data"
+          fi
+          cd "$RUNNER_TEMP/data"
+          rm -rf web/public/data && mkdir -p web/public
+          cp -r "$RUNNER_TEMP/published" web/public/data
+          git add -A
+          if git diff --cached --quiet; then echo "no changes"; exit 0; fi
+          git commit -m "data: snapshot $(date -u +%Y-%m-%dT%H:%MZ)"
+          git push origin data

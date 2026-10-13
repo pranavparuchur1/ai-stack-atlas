@@ -1,0 +1,17 @@
+# Pipeline configuration. Thresholds here drive the data-quality checks.
+
+# Price providers, tried in order for the latest quote. Historical bars always come
+# from yfinance (free, no key). finnhub/polygon are used only if their API key env var
+# is set (FINNHUB_API_KEY / POLYGON_API_KEY) and only for US-listed tickers.
+providers: [finnhub, polygon, yfinance]
+
+history_days: 400          # cold-start backfill window (>= 1y of trading days + buffer)
+refetch_overlap_days: 5    # incremental runs re-fetch this many days to pick up revisions
+analytics_window_days: 365 # returns / correlation / beta window
+vol_window: 60             # rolling volatility window (trading days)
+
+checks:
+  private_valuation_max_age_days: 365  # older -> WARN
+  price_stale_days: 4                  # latest price older than this (calendar days) -> WARN
+  max_daily_cap_jump: 0.60             # |1-day market-cap change| above this -> WARN
+  reconcile_tolerance: 1.0e-6          # relative tolerance for layer-total reconciliation

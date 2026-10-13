@@ -1,0 +1,53 @@
+{
+  "properties": {
+    "dates": {
+      "items": {
+        "format": "date",
+        "type": "string"
+      },
+      "title": "Dates",
+      "type": "array"
+    },
+    "price": {
+      "additionalProperties": {
+        "items": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "type": "array"
+      },
+      "title": "Price",
+      "type": "object"
+    },
+    "market_cap_usd": {
+      "additionalProperties": {
+        "items": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "type": "array"
+      },
+      "title": "Market Cap Usd",
+      "type": "object"
+    }
+  },
+  "required": [
+    "dates",
+    "price",
+    "market_cap_usd"
+  ],
+  "title": "PriceSeries",
+  "type": "object"
+}

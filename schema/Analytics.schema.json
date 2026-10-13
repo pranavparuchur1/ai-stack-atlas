@@ -1,0 +1,187 @@
+{
+  "$defs": {
+    "LayerIndexSeries": {
+      "properties": {
+        "dates": {
+          "items": {
+            "format": "date",
+            "type": "string"
+          },
+          "title": "Dates",
+          "type": "array"
+        },
+        "levels": {
+          "additionalProperties": {
+            "items": {
+              "type": "number"
+            },
+            "type": "array"
+          },
+          "title": "Levels",
+          "type": "object"
+        },
+        "day_returns": {
+          "additionalProperties": {
+            "items": {
+              "type": "number"
+            },
+            "type": "array"
+          },
+          "title": "Day Returns",
+          "type": "object"
+        }
+      },
+      "required": [
+        "dates",
+        "levels",
+        "day_returns"
+      ],
+      "title": "LayerIndexSeries",
+      "type": "object"
+    }
+  },
+  "properties": {
+    "as_of": {
+      "format": "date",
+      "title": "As Of",
+      "type": "string"
+    },
+    "window_start": {
+      "format": "date",
+      "title": "Window Start",
+      "type": "string"
+    },
+    "company_ids": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Company Ids",
+      "type": "array"
+    },
+    "correlation": {
+      "items": {
+        "items": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "type": "array"
+      },
+      "title": "Correlation",
+      "type": "array"
+    },
+    "layer_index": {
+      "$ref": "#/$defs/LayerIndexSeries"
+    },
+    "beta": {
+      "additionalProperties": {
+        "additionalProperties": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "type": "object"
+      },
+      "title": "Beta",
+      "type": "object"
+    },
+    "layer_correlation": {
+      "additionalProperties": {
+        "additionalProperties": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "type": "object"
+      },
+      "title": "Layer Correlation",
+      "type": "object"
+    },
+    "vol_60d": {
+      "additionalProperties": {
+        "anyOf": [
+          {
+            "type": "number"
+          },
+          {
+            "type": "null"
+          }
+        ]
+      },
+      "title": "Vol 60D",
+      "type": "object"
+    },
+    "layer_vol_60d": {
+      "additionalProperties": {
+        "anyOf": [
+          {
+            "type": "number"
+          },
+          {
+            "type": "null"
+          }
+        ]
+      },
+      "title": "Layer Vol 60D",
+      "type": "object"
+    },
+    "return_1y": {
+      "additionalProperties": {
+        "anyOf": [
+          {
+            "type": "number"
+          },
+          {
+            "type": "null"
+          }
+        ]
+      },
+      "title": "Return 1Y",
+      "type": "object"
+    },
+    "layer_return_1y": {
+      "additionalProperties": {
+        "anyOf": [
+          {
+            "type": "number"
+          },
+          {
+            "type": "null"
+          }
+        ]
+      },
+      "title": "Layer Return 1Y",
+      "type": "object"
+    }
+  },
+  "required": [
+    "as_of",
+    "window_start",
+    "company_ids",
+    "correlation",
+    "layer_index",
+    "beta",
+    "layer_correlation",
+    "vol_60d",
+    "layer_vol_60d",
+    "return_1y",
+    "layer_return_1y"
+  ],
+  "title": "Analytics",
+  "type": "object"
+}

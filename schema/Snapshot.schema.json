@@ -1,0 +1,533 @@
+{
+  "$defs": {
+    "Confidence": {
+      "enum": [
+        "reported",
+        "credible_press",
+        "estimated"
+      ],
+      "title": "Confidence",
+      "type": "string"
+    },
+    "Direction": {
+      "enum": [
+        "supplies_to",
+        "invests_in"
+      ],
+      "title": "Direction",
+      "type": "string"
+    },
+    "MagnitudeBasis": {
+      "enum": [
+        "contract_total",
+        "monthly_run_rate",
+        "investment_amount",
+        "stake_value"
+      ],
+      "title": "MagnitudeBasis",
+      "type": "string"
+    },
+    "RelationType": {
+      "enum": [
+        "equity_stake",
+        "compute_contract",
+        "chip_supply",
+        "memory_supply",
+        "foundry",
+        "equipment_supply",
+        "power_ppa",
+        "cloud_hosting",
+        "distribution_partnership",
+        "revenue_customer"
+      ],
+      "title": "RelationType",
+      "type": "string"
+    },
+    "SnapshotCompany": {
+      "properties": {
+        "id": {
+          "title": "Id",
+          "type": "string"
+        },
+        "name": {
+          "title": "Name",
+          "type": "string"
+        },
+        "ticker": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Ticker"
+        },
+        "live_symbol": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Live Symbol"
+        },
+        "exchange": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Exchange"
+        },
+        "currency": {
+          "title": "Currency",
+          "type": "string"
+        },
+        "is_public": {
+          "title": "Is Public",
+          "type": "boolean"
+        },
+        "primary_layer": {
+          "title": "Primary Layer",
+          "type": "string"
+        },
+        "secondary_layers": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Secondary Layers",
+          "type": "array"
+        },
+        "hq_country": {
+          "title": "Hq Country",
+          "type": "string"
+        },
+        "logo_url": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Logo Url"
+        },
+        "listing_note": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Listing Note"
+        },
+        "market_cap_usd": {
+          "title": "Market Cap Usd",
+          "type": "number"
+        },
+        "price": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Price"
+        },
+        "price_date": {
+          "anyOf": [
+            {
+              "format": "date",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Price Date"
+        },
+        "day_change_pct": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Day Change Pct"
+        },
+        "fx_usd_per_unit": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Fx Usd Per Unit"
+        },
+        "shares": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Shares"
+        },
+        "revenue_ttm_usd": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Revenue Ttm Usd"
+        },
+        "source": {
+          "title": "Source",
+          "type": "string"
+        },
+        "valuation": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Valuation"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "segments": {
+          "additionalProperties": {
+            "type": "number"
+          },
+          "title": "Segments",
+          "type": "object"
+        }
+      },
+      "required": [
+        "id",
+        "name",
+        "ticker",
+        "live_symbol",
+        "exchange",
+        "currency",
+        "is_public",
+        "primary_layer",
+        "secondary_layers",
+        "hq_country",
+        "logo_url",
+        "listing_note",
+        "market_cap_usd",
+        "price",
+        "price_date",
+        "day_change_pct",
+        "fx_usd_per_unit",
+        "shares",
+        "revenue_ttm_usd",
+        "source",
+        "valuation",
+        "segments"
+      ],
+      "title": "SnapshotCompany",
+      "type": "object"
+    },
+    "SnapshotEdge": {
+      "properties": {
+        "id": {
+          "title": "Id",
+          "type": "string"
+        },
+        "source_id": {
+          "title": "Source Id",
+          "type": "string"
+        },
+        "target_id": {
+          "title": "Target Id",
+          "type": "string"
+        },
+        "relation_type": {
+          "$ref": "#/$defs/RelationType"
+        },
+        "direction": {
+          "$ref": "#/$defs/Direction"
+        },
+        "magnitude_usd": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Magnitude Usd"
+        },
+        "magnitude_basis": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/MagnitudeBasis"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "stake_pct": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Stake Pct"
+        },
+        "supplier_revenue_share": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Supplier Revenue Share"
+        },
+        "confidence": {
+          "$ref": "#/$defs/Confidence"
+        },
+        "evidence_url": {
+          "title": "Evidence Url",
+          "type": "string"
+        },
+        "evidence_date": {
+          "format": "date",
+          "title": "Evidence Date",
+          "type": "string"
+        },
+        "notes": {
+          "title": "Notes",
+          "type": "string"
+        }
+      },
+      "required": [
+        "id",
+        "source_id",
+        "target_id",
+        "relation_type",
+        "direction",
+        "magnitude_usd",
+        "magnitude_basis",
+        "stake_pct",
+        "supplier_revenue_share",
+        "confidence",
+        "evidence_url",
+        "evidence_date",
+        "notes"
+      ],
+      "title": "SnapshotEdge",
+      "type": "object"
+    },
+    "SnapshotLayer": {
+      "properties": {
+        "id": {
+          "title": "Id",
+          "type": "string"
+        },
+        "name": {
+          "title": "Name",
+          "type": "string"
+        },
+        "short": {
+          "title": "Short",
+          "type": "string"
+        },
+        "order": {
+          "title": "Order",
+          "type": "integer"
+        },
+        "group": {
+          "title": "Group",
+          "type": "string"
+        },
+        "accent": {
+          "title": "Accent",
+          "type": "string"
+        },
+        "total_primary_usd": {
+          "title": "Total Primary Usd",
+          "type": "number"
+        },
+        "total_segment_usd": {
+          "title": "Total Segment Usd",
+          "type": "number"
+        },
+        "day_change_pct": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Day Change Pct"
+        },
+        "company_count": {
+          "title": "Company Count",
+          "type": "integer"
+        },
+        "public_count": {
+          "title": "Public Count",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "id",
+        "name",
+        "short",
+        "order",
+        "group",
+        "accent",
+        "total_primary_usd",
+        "total_segment_usd",
+        "day_change_pct",
+        "company_count",
+        "public_count"
+      ],
+      "title": "SnapshotLayer",
+      "type": "object"
+    },
+    "Valuation": {
+      "properties": {
+        "valuation_usd": {
+          "title": "Valuation Usd",
+          "type": "number"
+        },
+        "valuation": {
+          "title": "Valuation",
+          "type": "number"
+        },
+        "currency": {
+          "title": "Currency",
+          "type": "string"
+        },
+        "as_of_date": {
+          "format": "date",
+          "title": "As Of Date",
+          "type": "string"
+        },
+        "round": {
+          "title": "Round",
+          "type": "string"
+        },
+        "source_url": {
+          "title": "Source Url",
+          "type": "string"
+        },
+        "confidence": {
+          "$ref": "#/$defs/Confidence"
+        },
+        "age_days": {
+          "title": "Age Days",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "valuation_usd",
+        "valuation",
+        "currency",
+        "as_of_date",
+        "round",
+        "source_url",
+        "confidence",
+        "age_days"
+      ],
+      "title": "Valuation",
+      "type": "object"
+    }
+  },
+  "properties": {
+    "schema_version": {
+      "default": 1,
+      "title": "Schema Version",
+      "type": "integer"
+    },
+    "run_id": {
+      "title": "Run Id",
+      "type": "string"
+    },
+    "generated_at": {
+      "format": "date-time",
+      "title": "Generated At",
+      "type": "string"
+    },
+    "as_of": {
+      "format": "date",
+      "title": "As Of",
+      "type": "string"
+    },
+    "total_market_cap_usd": {
+      "title": "Total Market Cap Usd",
+      "type": "number"
+    },
+    "outside_stack_segment_usd": {
+      "title": "Outside Stack Segment Usd",
+      "type": "number"
+    },
+    "layers": {
+      "items": {
+        "$ref": "#/$defs/SnapshotLayer"
+      },
+      "title": "Layers",
+      "type": "array"
+    },
+    "companies": {
+      "items": {
+        "$ref": "#/$defs/SnapshotCompany"
+      },
+      "title": "Companies",
+      "type": "array"
+    },
+    "edges": {
+      "items": {
+        "$ref": "#/$defs/SnapshotEdge"
+      },
+      "title": "Edges",
+      "type": "array"
+    }
+  },
+  "required": [
+    "run_id",
+    "generated_at",
+    "as_of",
+    "total_market_cap_usd",
+    "outside_stack_segment_usd",
+    "layers",
+    "companies",
+    "edges"
+  ],
+  "title": "Snapshot",
+  "type": "object"
+}
