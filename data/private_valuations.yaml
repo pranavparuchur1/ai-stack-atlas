@@ -1,0 +1,103 @@
+# Latest disclosed valuations for private companies. When a company IPOs, set
+# is_public: true + ticker in companies.yaml; its row here is then ignored.
+#
+# valuation is in `currency` (converted to USD by the pipeline at the as_of_date FX rate).
+# Only CLOSED, priced rounds are used - reported talks (e.g. Anthropic at ~$2T IPO targets,
+# Cohere at $20B, Perplexity at $30B) are deliberately excluded. Staleness is checked
+# against `private_valuation_max_age_days` in config/pipeline.yaml (warn, not fail).
+
+private_valuations:
+  - company_id: openai
+    valuation: 852000000000
+    currency: USD
+    basis: post_money
+    as_of_date: 2026-03-31
+    round: "2026 round ($122B committed)"
+    source_url: https://www.cnbc.com/2026/03/31/openai-funding-round-ipo.html
+    confidence: reported
+
+  - company_id: anthropic
+    valuation: 965000000000
+    currency: USD
+    basis: post_money
+    as_of_date: 2026-05-28
+    round: Series H ($65B)
+    source_url: https://www.cnbc.com/2026/05/28/anthropic-open-ai-startup-value.html
+    confidence: reported
+
+  - company_id: mistral
+    valuation: 21000000000
+    currency: EUR
+    basis: post_money
+    as_of_date: 2026-09-08
+    round: Series D (EUR 3B, Samsung-led)
+    source_url: https://www.cnbc.com/2026/09/08/mistral-ai-funding-valuation-samsung.html
+    confidence: reported
+    notes: Reported as "more than EUR 21B"; the floor is used.
+
+  - company_id: cohere
+    valuation: 7000000000
+    currency: USD
+    basis: post_money
+    as_of_date: 2025-09-24
+    round: Series D extension
+    source_url: https://techcrunch.com/2025/09/24/cohere-hits-7b-valuation-a-month-after-its-last-raise-partners-with-amd/
+    confidence: reported
+    notes: A ~$20B Series E (with the Aleph Alpha merger) was reported in 2026 but not confirmed closed.
+
+  - company_id: ssi
+    valuation: 32000000000
+    currency: USD
+    basis: post_money
+    as_of_date: 2025-04-01
+    round: "$2B round (Greenoaks-led)"
+    source_url: https://techcrunch.com/2026/07/27/ilya-sutskevers-safe-superintelligence-partners-with-nvidia-to-scale-its-ai-research/
+    confidence: credible_press
+    notes: Month-level date only - reported by FT/TechCrunch in April 2025 (some outlets say Feb 2025). NVIDIA's July-2026 investment carried no disclosed valuation.
+
+  - company_id: tml
+    valuation: 12000000000
+    currency: USD
+    basis: post_money
+    as_of_date: 2025-07-15
+    round: Seed ($2B)
+    source_url: https://techcrunch.com/2025/07/15/mira-muratis-thinking-machines-lab-is-worth-12b-in-seed-round/
+    confidence: reported
+    notes: Later talks at $40B+ pre-money not closed as of 2026-10. Expected to trip the staleness warning.
+
+  - company_id: crusoe
+    valuation: 30900000000
+    currency: USD
+    basis: post_money
+    as_of_date: 2026-09-17
+    round: Series F ($3.9B initial close)
+    source_url: https://www.crusoe.ai/resources/newsroom/crusoe-announces-series-f-funding
+    confidence: reported
+
+  - company_id: databricks
+    valuation: 190000000000
+    currency: USD
+    basis: post_money
+    as_of_date: 2026-08-13
+    round: "$5B strategic round (Coatue-led)"
+    source_url: https://www.cnbc.com/2026/08/13/databricks-funding-round-190-billion-valuation.html
+    confidence: reported
+
+  - company_id: perplexity
+    valuation: 20000000000
+    currency: USD
+    basis: post_money
+    as_of_date: 2025-09-10
+    round: "$200M (reported)"
+    source_url: https://techcrunch.com/2025/09/10/perplexity-reportedly-raised-200m-at-20b-valuation/
+    confidence: credible_press
+    notes: Reported by The Information; not announced by the company.
+
+  - company_id: scaleai
+    valuation: 29000000000
+    currency: USD
+    basis: post_money
+    as_of_date: 2025-06-13
+    round: Meta strategic investment (49%)
+    source_url: https://techcrunch.com/2025/06/13/scale-ai-confirms-significant-investment-from-meta-says-ceo-alexandr-wang-is-leaving/
+    confidence: reported

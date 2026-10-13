@@ -1,0 +1,47 @@
+# The AI stack, bottom (order 1) to top (order 7). Semicap/foundry and chips are the
+# spec's layers 3a and 3b; they share band group "3" in the UI.
+# `accent` is a design-token name resolved in web/src/styles/tokens.css, so the same
+# colour is used for a layer in every view.
+layers:
+  - id: power
+    name: Power & Energy
+    short: Power
+    order: 1
+    group: "1"
+    accent: layer-power
+  - id: infra
+    name: Data Center Infra
+    short: Infra
+    order: 2
+    group: "2"
+    accent: layer-infra
+  - id: semicap
+    name: Semicap & Foundry
+    short: Semicap
+    order: 3
+    group: "3"
+    accent: layer-semicap
+  - id: chips
+    name: Chips & Memory
+    short: Chips
+    order: 4
+    group: "3"
+    accent: layer-chips
+  - id: cloud
+    name: Cloud & Hyperscalers
+    short: Cloud
+    order: 5
+    group: "4"
+    accent: layer-cloud
+  - id: models
+    name: Foundation Models
+    short: Models
+    order: 6
+    group: "5"
+    accent: layer-models
+  - id: apps
+    name: Applications
+    short: Apps
+    order: 7
+    group: "6"
+    accent: layer-apps

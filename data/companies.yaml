@@ -1,0 +1,90 @@
+# Companies in the atlas. Market caps are NOT stored here - they come from the pipeline.
+#
+# ticker:        the symbol the pipeline prices (yfinance convention, e.g. 000660.KS, SU.PA).
+# live_symbol:   optional US symbol for the Finnhub WebSocket in live mode (free tier = US only).
+# currency:      currency of `ticker`'s quote; non-USD listings are FX-normalised to USD.
+# primary_layer: the ONE layer whose total includes this company's full market cap.
+# secondary_layers: extra layers the company participates in (graph + segment split only).
+# Listing status verified 2026-10-13 (see docs/data_dictionary.md for sources on recent IPOs).
+
+companies:
+  # ------------------------------------------------------------------ 1. power
+  - {id: ceg, name: Constellation Energy, ticker: CEG, exchange: NASDAQ, currency: USD, is_public: true, primary_layer: power, secondary_layers: [], hq_country: US}
+  - {id: vst, name: Vistra, ticker: VST, exchange: NYSE, currency: USD, is_public: true, primary_layer: power, secondary_layers: [], hq_country: US}
+  - {id: tln, name: Talen Energy, ticker: TLN, exchange: NASDAQ, currency: USD, is_public: true, primary_layer: power, secondary_layers: [], hq_country: US}
+  - {id: nrg, name: NRG Energy, ticker: NRG, exchange: NYSE, currency: USD, is_public: true, primary_layer: power, secondary_layers: [], hq_country: US}
+  - {id: peg, name: PSEG, ticker: PEG, exchange: NYSE, currency: USD, is_public: true, primary_layer: power, secondary_layers: [], hq_country: US}
+  - {id: nee, name: NextEra Energy, ticker: NEE, exchange: NYSE, currency: USD, is_public: true, primary_layer: power, secondary_layers: [], hq_country: US}
+  - {id: gev, name: GE Vernova, ticker: GEV, exchange: NYSE, currency: USD, is_public: true, primary_layer: power, secondary_layers: [infra], hq_country: US}
+  - {id: oklo, name: Oklo, ticker: OKLO, exchange: NYSE, currency: USD, is_public: true, primary_layer: power, secondary_layers: [], hq_country: US}
+  - {id: smr, name: NuScale Power, ticker: SMR, exchange: NYSE, currency: USD, is_public: true, primary_layer: power, secondary_layers: [], hq_country: US}
+  - {id: xe, name: X-energy, ticker: XE, exchange: NASDAQ, currency: USD, is_public: true, primary_layer: power, secondary_layers: [], hq_country: US, listing_note: "IPO 2026-04-24"}
+  - {id: be, name: Bloom Energy, ticker: BE, exchange: NYSE, currency: USD, is_public: true, primary_layer: power, secondary_layers: [infra], hq_country: US}
+  - {id: bep, name: Brookfield Renewable, ticker: BEP, exchange: NYSE, currency: USD, is_public: true, primary_layer: power, secondary_layers: [], hq_country: CA, listing_note: "BEP partnership units; BEPC corporate shares not included"}
+  - {id: d, name: Dominion Energy, ticker: D, exchange: NYSE, currency: USD, is_public: true, primary_layer: power, secondary_layers: [], hq_country: US}
+
+  # ------------------------------------------------------------------ 2. data-center infra
+  - {id: vrt, name: Vertiv, ticker: VRT, exchange: NYSE, currency: USD, is_public: true, primary_layer: infra, secondary_layers: [], hq_country: US}
+  - {id: etn, name: Eaton, ticker: ETN, exchange: NYSE, currency: USD, is_public: true, primary_layer: infra, secondary_layers: [power], hq_country: IE}
+  - {id: su, name: Schneider Electric, ticker: SU.PA, exchange: EPA, currency: EUR, is_public: true, primary_layer: infra, secondary_layers: [power], hq_country: FR}
+  - {id: eqix, name: Equinix, ticker: EQIX, exchange: NASDAQ, currency: USD, is_public: true, primary_layer: infra, secondary_layers: [], hq_country: US}
+  - {id: dlr, name: Digital Realty, ticker: DLR, exchange: NYSE, currency: USD, is_public: true, primary_layer: infra, secondary_layers: [], hq_country: US}
+  - {id: anet, name: Arista Networks, ticker: ANET, exchange: NYSE, currency: USD, is_public: true, primary_layer: infra, secondary_layers: [], hq_country: US}
+  - {id: smci, name: Supermicro, ticker: SMCI, exchange: NASDAQ, currency: USD, is_public: true, primary_layer: infra, secondary_layers: [], hq_country: US}
+  - {id: dell, name: Dell Technologies, ticker: DELL, exchange: NYSE, currency: USD, is_public: true, primary_layer: infra, secondary_layers: [], hq_country: US}
+  - {id: cls, name: Celestica, ticker: CLS, exchange: NYSE, currency: USD, is_public: true, primary_layer: infra, secondary_layers: [], hq_country: CA}
+  - {id: crdo, name: Credo Technology, ticker: CRDO, exchange: NASDAQ, currency: USD, is_public: true, primary_layer: infra, secondary_layers: [chips], hq_country: US}
+  - {id: apld, name: Applied Digital, ticker: APLD, exchange: NASDAQ, currency: USD, is_public: true, primary_layer: infra, secondary_layers: [cloud], hq_country: US}
+  - {id: glw, name: Corning, ticker: GLW, exchange: NYSE, currency: USD, is_public: true, primary_layer: infra, secondary_layers: [], hq_country: US}
+
+  # ------------------------------------------------------------------ 3a. semicap & foundry
+  - {id: asml, name: ASML, ticker: ASML, exchange: NASDAQ, currency: USD, is_public: true, primary_layer: semicap, secondary_layers: [], hq_country: NL, listing_note: "NY registry shares (1:1 with Euronext ASML)"}
+  - {id: amat, name: Applied Materials, ticker: AMAT, exchange: NASDAQ, currency: USD, is_public: true, primary_layer: semicap, secondary_layers: [], hq_country: US}
+  - {id: lrcx, name: Lam Research, ticker: LRCX, exchange: NASDAQ, currency: USD, is_public: true, primary_layer: semicap, secondary_layers: [], hq_country: US}
+  - {id: klac, name: KLA, ticker: KLAC, exchange: NASDAQ, currency: USD, is_public: true, primary_layer: semicap, secondary_layers: [], hq_country: US}
+  - {id: tel, name: Tokyo Electron, ticker: 8035.T, exchange: TSE, currency: JPY, is_public: true, primary_layer: semicap, secondary_layers: [], hq_country: JP}
+  - {id: tsm, name: TSMC, ticker: TSM, exchange: NYSE, currency: USD, is_public: true, primary_layer: semicap, secondary_layers: [chips], hq_country: TW, listing_note: "ADR; 1 ADR = 5 common shares (TWSE 2330)"}
+  - {id: snps, name: Synopsys, ticker: SNPS, exchange: NASDAQ, currency: USD, is_public: true, primary_layer: semicap, secondary_layers: [], hq_country: US}
+  - {id: cdns, name: Cadence Design Systems, ticker: CDNS, exchange: NASDAQ, currency: USD, is_public: true, primary_layer: semicap, secondary_layers: [], hq_country: US}
+
+  # ------------------------------------------------------------------ 3b. chips & memory
+  - {id: nvda, name: NVIDIA, ticker: NVDA, exchange: NASDAQ, currency: USD, is_public: true, primary_layer: chips, secondary_layers: [cloud], hq_country: US}
+  - {id: amd, name: AMD, ticker: AMD, exchange: NASDAQ, currency: USD, is_public: true, primary_layer: chips, secondary_layers: [], hq_country: US}
+  - {id: avgo, name: Broadcom, ticker: AVGO, exchange: NASDAQ, currency: USD, is_public: true, primary_layer: chips, secondary_layers: [infra], hq_country: US}
+  - {id: mrvl, name: Marvell, ticker: MRVL, exchange: NASDAQ, currency: USD, is_public: true, primary_layer: chips, secondary_layers: [infra], hq_country: US}
+  - {id: mu, name: Micron, ticker: MU, exchange: NASDAQ, currency: USD, is_public: true, primary_layer: chips, secondary_layers: [], hq_country: US}
+  - {id: skhynix, name: SK hynix, ticker: 000660.KS, live_symbol: SKHY, exchange: KRX, currency: KRW, is_public: true, primary_layer: chips, secondary_layers: [], hq_country: KR, listing_note: "Priced on KRX; Nasdaq ADR SKHY since 2026-07-10 (1 ADR = 0.1 share)"}
+  - {id: samsung, name: Samsung Electronics, ticker: 005930.KS, exchange: KRX, currency: KRW, is_public: true, primary_layer: chips, secondary_layers: [semicap], hq_country: KR, listing_note: "Common shares only; preferred (005935.KS) excluded"}
+  - {id: intc, name: Intel, ticker: INTC, exchange: NASDAQ, currency: USD, is_public: true, primary_layer: chips, secondary_layers: [semicap], hq_country: US}
+  - {id: arm, name: Arm Holdings, ticker: ARM, exchange: NASDAQ, currency: USD, is_public: true, primary_layer: chips, secondary_layers: [], hq_country: GB}
+  - {id: cbrs, name: Cerebras, ticker: CBRS, exchange: NASDAQ, currency: USD, is_public: true, primary_layer: chips, secondary_layers: [cloud], hq_country: US, listing_note: "IPO 2026-05-14"}
+
+  # ------------------------------------------------------------------ 4. cloud / hyperscalers
+  - {id: msft, name: Microsoft, ticker: MSFT, exchange: NASDAQ, currency: USD, is_public: true, primary_layer: cloud, secondary_layers: [models, apps], hq_country: US}
+  - {id: amzn, name: Amazon, ticker: AMZN, exchange: NASDAQ, currency: USD, is_public: true, primary_layer: cloud, secondary_layers: [chips, models], hq_country: US}
+  - {id: googl, name: Alphabet, ticker: GOOGL, exchange: NASDAQ, currency: USD, is_public: true, primary_layer: cloud, secondary_layers: [chips, models, apps], hq_country: US, listing_note: "GOOGL price x total Class A+B+C shares"}
+  - {id: orcl, name: Oracle, ticker: ORCL, exchange: NYSE, currency: USD, is_public: true, primary_layer: cloud, secondary_layers: [apps], hq_country: US}
+  - {id: meta, name: Meta Platforms, ticker: META, exchange: NASDAQ, currency: USD, is_public: true, primary_layer: cloud, secondary_layers: [models, apps], hq_country: US}
+  - {id: crwv, name: CoreWeave, ticker: CRWV, exchange: NASDAQ, currency: USD, is_public: true, primary_layer: cloud, secondary_layers: [], hq_country: US}
+  - {id: nbis, name: Nebius, ticker: NBIS, exchange: NASDAQ, currency: USD, is_public: true, primary_layer: cloud, secondary_layers: [], hq_country: NL}
+  - {id: iren, name: IREN, ticker: IREN, exchange: NASDAQ, currency: USD, is_public: true, primary_layer: cloud, secondary_layers: [infra], hq_country: AU}
+  - {id: crusoe, name: Crusoe, ticker: null, exchange: null, currency: USD, is_public: false, primary_layer: cloud, secondary_layers: [infra, power], hq_country: US}
+
+  # ------------------------------------------------------------------ 5. foundation models
+  - {id: openai, name: OpenAI, ticker: null, exchange: null, currency: USD, is_public: false, primary_layer: models, secondary_layers: [apps], hq_country: US, listing_note: "Confidential S-1 submitted June 2026"}
+  - {id: anthropic, name: Anthropic, ticker: null, exchange: null, currency: USD, is_public: false, primary_layer: models, secondary_layers: [apps], hq_country: US, listing_note: "Confidential S-1 submitted 2026-06-01"}
+  - {id: spcx, name: SpaceX (xAI), ticker: SPCX, exchange: NASDAQ, currency: USD, is_public: true, primary_layer: models, secondary_layers: [cloud, apps], hq_country: US, listing_note: "IPO 2026-06-12; absorbed xAI (Feb 2026) and Cursor (Aug 2026). Primary layer is Models by design; segment mode counts only the AI segment."}
+  - {id: mistral, name: Mistral AI, ticker: null, exchange: null, currency: EUR, is_public: false, primary_layer: models, secondary_layers: [], hq_country: FR}
+  - {id: cohere, name: Cohere, ticker: null, exchange: null, currency: USD, is_public: false, primary_layer: models, secondary_layers: [], hq_country: CA}
+  - {id: ssi, name: Safe Superintelligence, ticker: null, exchange: null, currency: USD, is_public: false, primary_layer: models, secondary_layers: [], hq_country: US}
+  - {id: tml, name: Thinking Machines Lab, ticker: null, exchange: null, currency: USD, is_public: false, primary_layer: models, secondary_layers: [], hq_country: US}
+
+  # ------------------------------------------------------------------ 6. applications
+  - {id: pltr, name: Palantir, ticker: PLTR, exchange: NASDAQ, currency: USD, is_public: true, primary_layer: apps, secondary_layers: [], hq_country: US}
+  - {id: crm, name: Salesforce, ticker: CRM, exchange: NYSE, currency: USD, is_public: true, primary_layer: apps, secondary_layers: [], hq_country: US}
+  - {id: now, name: ServiceNow, ticker: NOW, exchange: NYSE, currency: USD, is_public: true, primary_layer: apps, secondary_layers: [], hq_country: US}
+  - {id: adbe, name: Adobe, ticker: ADBE, exchange: NASDAQ, currency: USD, is_public: true, primary_layer: apps, secondary_layers: [], hq_country: US}
+  - {id: snow, name: Snowflake, ticker: SNOW, exchange: NYSE, currency: USD, is_public: true, primary_layer: apps, secondary_layers: [], hq_country: US}
+  - {id: databricks, name: Databricks, ticker: null, exchange: null, currency: USD, is_public: false, primary_layer: apps, secondary_layers: [], hq_country: US}
+  - {id: perplexity, name: Perplexity, ticker: null, exchange: null, currency: USD, is_public: false, primary_layer: apps, secondary_layers: [models], hq_country: US}
+  - {id: scaleai, name: Scale AI, ticker: null, exchange: null, currency: USD, is_public: false, primary_layer: apps, secondary_layers: [models], hq_country: US}
