@@ -92,7 +92,7 @@ Every number in the curated data is listed next to its source in
   labelled 2%-of-revenue assumption.
 * **Backtests (honest result):** across 3 events / 54 company-events the model does **not** beat
   predicting zero on pooled error (1-day MAE 2.93% vs 2.77%). It does on the one *capex* shock
-  (Alphabet, July 2026: right direction for 10/10 suppliers, ρ = 0.77). Details in
+  (Alphabet, July 2026: right direction for 10/10 suppliers, ρ = 0.78). Details in
   [docs/methodology.md](docs/methodology.md#5-backtests).
 
 Full write-up: [methodology](docs/methodology.md) · [data dictionary](docs/data_dictionary.md) ·
@@ -121,7 +121,7 @@ Tests: `uv run pytest --cov` (pipeline, 97% coverage) · `npm test` (engine) ·
 * **79 of 118 edges have no disclosed $ value**; the model uses a labelled assumption for them.
 * **Private marks are stale by construction**; five are more than a year old (flagged).
 * **Evidence dates ≠ start dates**, share counts are held constant over the 1-year window, and
-  revenue is today's TTM — including inside backtests.
+  revenue is the latest TTM — including inside backtests (betas are switched off there).
 * **Small backtest sample** (3 events), noisy windows, and one parameter tuned on them.
 * The Models layer index is one company (SpaceX, listed June 2026).
 

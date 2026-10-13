@@ -225,6 +225,9 @@ def run_pipeline(
             for name, model in files.items():
                 write_json(st.out_dir / name, model)
                 outputs.append(name)
+            days = sorted(f.stem for f in (st.out_dir / "history").glob("????-??-??.json"))
+            write_json(st.out_dir / "history" / "index.json", {"dates": days})
+            outputs.append("history/index.json")
 
         wh.record_run(
             {

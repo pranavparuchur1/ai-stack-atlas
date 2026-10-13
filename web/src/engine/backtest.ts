@@ -3,7 +3,7 @@
  * caps from the close before it, then score predicted moves against market-adjusted returns.
  */
 import { propagate } from "./propagate";
-import type { BacktestEvent, Betas, Edge, EngineNode, ModelParams, PropagationResult, Scenario } from "./types";
+import type { BacktestEvent, Edge, EngineNode, ModelParams, PropagationResult, Scenario } from "./types";
 
 export interface ScoredRow {
   id: string;
@@ -26,19 +26,23 @@ export function eventScenario(ev: BacktestEvent): Scenario {
   return { companyId: s.company_id, type: s.type, pct: s.pct ?? undefined, valuationUsd: s.valuation_usd ?? undefined };
 }
 
-/** Nodes as of the event: pre-event caps, current names/layers/revenue (revenue is current - documented). */
+/** Nodes as of the event: pre-event caps and the revenue frozen into backtests.json; names/layers are static. */
 export function eventNodes(ev: BacktestEvent, current: Map<string, EngineNode>): Map<string, EngineNode> {
   const out = new Map<string, EngineNode>();
   for (const c of ev.companies) {
     const base = current.get(c.id);
-    if (base) out.set(c.id, { ...base, cap: c.cap_before, revenue: ev.revenue[c.id] ?? base.revenue });
+    if (base) out.set(c.id, { ...base, cap: c.cap_before, revenue: ev.revenue[c.id] ?? null });
   }
   return out;
 }
 
-export function replay(ev: BacktestEvent, current: Map<string, EngineNode>, edges: Edge[], p: ModelParams, betas: Betas): PropagationResult {
+/**
+ * Replays run WITHOUT the empirical beta channel: today's betas are estimated on returns after the
+ * event, so using them would be look-ahead (and would make results drift as data refreshes).
+ */
+export function replay(ev: BacktestEvent, current: Map<string, EngineNode>, edges: Edge[], p: ModelParams): PropagationResult {
   const allowed = new Set(ev.edge_ids);
-  return propagate(eventScenario(ev), eventNodes(ev, current), edges.filter((e) => allowed.has(e.id)), p, betas);
+  return propagate(eventScenario(ev), eventNodes(ev, current), edges.filter((e) => allowed.has(e.id)), p, {});
 }
 
 /** Average ranks (ties share the mean rank). */

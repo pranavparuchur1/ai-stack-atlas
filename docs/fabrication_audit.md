@@ -30,7 +30,7 @@
 | $30.0B | Microsoft → Anthropic magnitude_usd | https://blogs.microsoft.com/blog/2025/11/18/microsoft-nvidia-and-anthropic-announce-strategic-partnerships/ |
 | $17.4B | Nebius → Microsoft magnitude_usd | https://www.sec.gov/Archives/edgar/data/1513845/000110465925088312/tm2525580d1_6k.htm |
 | $27.0B | Nebius → Meta Platforms magnitude_usd | https://www.cnbc.com/2026/03/16/meta-nebius-ai-infrastructure.html |
-| $300.0B | Oracle → OpenAI magnitude_usd | https://www.cnbc.com/2025/10/15/a-guide-to-1-trillion-worth-of-ai-deals-between-openai-nvidia.html |
+| $300.0B | Oracle → OpenAI magnitude_usd | https://techcrunch.com/2025/09/10/openai-and-oracle-reportedly-ink-historic-cloud-computing-deal/ |
 | $13.0B | Amazon → Anthropic magnitude_usd | https://www.cnbc.com/2026/04/20/amazon-invest-up-to-25-billion-in-anthropic-part-of-ai-infrastructure.html |
 | $50.0B | Amazon → OpenAI magnitude_usd | https://www.aboutamazon.com/news/aws/amazon-open-ai-strategic-partnership-investment |
 | $13.0B | Alphabet → Anthropic magnitude_usd | https://www.cnbc.com/2026/04/24/google-to-invest-up-to-40-billion-in-anthropic-as-search-giant-spreads-its-ai-bets.html |
@@ -49,9 +49,6 @@
 | $2.0B | NVIDIA → Synopsys magnitude_usd | https://nvidianews.nvidia.com/news/nvidia-and-synopsys-announce-strategic-partnership-to-revolutionize-engineering-and-design |
 | 12.0% | Applied Materials → Samsung Electronics supplier_revenue_share | https://www.sec.gov/Archives/edgar/data/6951/000000695124000044/amat-20241027.htm |
 | 11.0% | Applied Materials → TSMC supplier_revenue_share | https://www.sec.gov/Archives/edgar/data/6951/000000695124000044/amat-20241027.htm |
-| 14.5% | Tokyo Electron → TSMC supplier_revenue_share | https://www.tel.com/ir/library/ar/egp82m00000000h7-att/ir2024_data_section_en.pdf |
-| 16.2% | Tokyo Electron → Intel supplier_revenue_share | https://www.tel.com/ir/library/ar/egp82m00000000h7-att/ir2024_data_section_en.pdf |
-| 12.5% | Tokyo Electron → Samsung Electronics supplier_revenue_share | https://www.tel.com/ir/library/ar/egp82m00000000h7-att/ir2024_data_section_en.pdf |
 | 11.1% | ASML → Mistral AI stake_pct | https://www.sec.gov/Archives/edgar/data/0000937966/000162828026011378/asml-20251231.htm |
 | $11.0B | Applied Digital → CoreWeave magnitude_usd | https://ir.applieddigital.com/news-events/press-releases/detail/128/applied-digital-finalizes-additional-150mw-lease-with |
 | $5.8B | Dell Technologies → IREN magnitude_usd | https://www.sec.gov/Archives/edgar/data/1878848/000114036125040072/ef20058139_ex99-1.htm |

@@ -65,7 +65,7 @@ function EdgeRow({ e, other, onSelect }: { e: SnapshotEdge; other?: Marked; onSe
 }
 
 export function CompanyDrawer() {
-  const { selectedId, select } = useUi();
+  const { selectedId, select, attribution } = useUi();
   const { data: snap, byId, companies } = useMarked();
   const { data: analytics } = useAnalytics();
   const { data: prices } = usePrices();
@@ -92,7 +92,11 @@ export function CompanyDrawer() {
   );
 
   if (!c || !snap) return null;
-  const layerTotal = snap.layers.find((l) => l.id === c.primary_layer)?.total_primary_usd ?? 0;
+  // share of its primary layer, in whichever attribution mode is active
+  const layerInfo = snap.layers.find((l) => l.id === c.primary_layer);
+  const segShare = c.segments[c.primary_layer] ?? 0;
+  const layerTotal = (attribution === "primary" ? layerInfo?.total_primary_usd : layerInfo?.total_segment_usd) ?? 0;
+  const layerValue = attribution === "primary" ? c.cap : c.cap * segShare;
   const series = prices?.price[c.id];
   const corr = analytics?.corr_to_layer[c.id];
   const beta = analytics?.beta[c.id];
@@ -129,7 +133,11 @@ export function CompanyDrawer() {
             className={c.is_public ? toneClass[tone(c.change)] : "text-ink-3"}
             sub={c.price != null ? price(c.price, c.currency) : undefined}
           />
-          <Kpi label="Share of layer" value={pct(layerTotal ? c.cap / layerTotal : null, 1, false)} sub="primary attribution" />
+          <Kpi
+            label="Share of layer"
+            value={pct(layerTotal ? layerValue / layerTotal : null, 1, false)}
+            sub={attribution === "primary" ? "primary attribution" : `by segment (${pct(segShare, 0, false)} of cap)`}
+          />
           <Kpi label="Revenue (TTM)" value={usd(c.revenue_ttm_usd)} />
           <Kpi label="1-year return" value={pct(analytics?.return_1y[c.id], 1)} className={toneClass[tone(analytics?.return_1y[c.id])]} />
           <Kpi label="60-day vol (ann.)" value={pct(analytics?.vol_60d[c.id], 0, false)} />

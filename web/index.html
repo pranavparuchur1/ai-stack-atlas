@@ -13,24 +13,23 @@
     <link rel="icon" type="image/svg+xml" href="./favicon.svg" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <!-- fonts load without blocking first paint; system fallbacks render meanwhile -->
-    <link
-      rel="preload"
-      as="style"
-      href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans+Condensed:wght@400;500;600&family=IBM+Plex+Sans:wght@400;600&display=optional"
-      onload="this.onload=null;this.rel='stylesheet'"
-    />
     <noscript
       ><link
         rel="stylesheet"
         href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans+Condensed:wght@400;500;600&family=IBM+Plex+Sans:wght@400;600&display=optional"
     /></noscript>
     <script>
-      // apply the saved theme before first paint (no flash); storage may be unavailable
+      // Before first paint: apply the saved theme (no flash; storage may be unavailable) and load the
+      // fonts without blocking rendering. Kept inline and hashed into the CSP at build time.
       try {
         var t = localStorage.getItem("atlas.theme");
         if (t === "light" || t === "dark") document.documentElement.dataset.theme = t;
       } catch (e) {}
+      var f = document.createElement("link");
+      f.rel = "stylesheet";
+      f.href =
+        "https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans+Condensed:wght@400;500;600&family=IBM+Plex+Sans:wght@400;600&display=optional";
+      document.head.appendChild(f);
     </script>
   </head>
   <body>

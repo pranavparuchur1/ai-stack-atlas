@@ -54,7 +54,14 @@ class YFinanceProvider:
     def history(self, tickers: Sequence[str], start: date, end: date) -> pd.DataFrame:
         if not tickers:
             return pd.DataFrame(columns=HISTORY_COLUMNS)
-        return _melt(_download_close(tickers, start, end), "ticker", "close")[HISTORY_COLUMNS]
+        long = _melt(_download_close(tickers, start, end), "ticker", "close")
+        # Yahoo batch downloads occasionally drop symbols (rate limits, "database is locked" cache errors);
+        # retry the missing ones once, individually, before the quality checks decide whether that is fatal.
+        missing = [t for t in tickers if t not in set(long["ticker"])]
+        for t in missing:
+            log.warning("no bars for %s in batch download; retrying", t)
+            long = pd.concat([long, _melt(_download_close([t], start, end), "ticker", "close")], ignore_index=True)
+        return long[HISTORY_COLUMNS]
 
     def fx_history(self, currencies: Sequence[str], start: date, end: date) -> pd.DataFrame:
         foreign = sorted({c for c in currencies if c != "USD"})

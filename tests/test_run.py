@@ -30,7 +30,9 @@ def test_full_run_publishes_consistent_outputs(settings: Settings, fake_provider
         "prices_1y.json",
         "model.json",
         "backtests.json",
+        "history/index.json",
     }
+    assert _read(settings, "history/index.json") == {"dates": [str(TODAY)]}
 
     snap = _read(settings, "snapshot_latest.json")
     total = sum(c["market_cap_usd"] for c in snap["companies"])

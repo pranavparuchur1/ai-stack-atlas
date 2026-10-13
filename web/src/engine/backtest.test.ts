@@ -51,7 +51,7 @@ describe("real backtests", () => {
       const nodes = eventNodes(ev, current);
       const src = nodes.get(ev.scenario.company_id)!;
       expect(src.cap).toBe(ev.companies.find((c) => c.id === src.id)!.cap_before);
-      const r = replay(ev, current, snap.edges, params, {});
+      const r = replay(ev, current, snap.edges, params);
       for (const imp of r.impacts)
         for (const c of imp.contributions) for (const s of c.path) expect(s.edge.evidence_date <= ev.date).toBe(true);
     }
@@ -59,7 +59,7 @@ describe("real backtests", () => {
 
   it("produces a scorable set for every event", () => {
     for (const ev of bt.events) {
-      const s = score(replay(ev, current, snap.edges, params, {}), ev, "3");
+      const s = score(replay(ev, current, snap.edges, params), ev, "3");
       expect(s.n).toBeGreaterThan(2);
       expect(s.maeModel).not.toBeNull();
     }

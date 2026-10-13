@@ -8,6 +8,7 @@ import { useElementSize } from "../lib/useElementSize";
 import { useUi } from "../state/store";
 import type { LayerId, SnapshotLayer } from "../types";
 import { CompanyTooltip } from "../components/CompanyTooltip";
+import { StackTable } from "../components/StackTable";
 
 const MIN_BAND = 52;
 const GAP = 3;
@@ -128,6 +129,7 @@ export function StackView() {
   const { select, selectedId, hoveredId } = useUi();
   const [ref, size] = useElementSize<HTMLDivElement>();
   const [pointer, setPointer] = useState<{ x: number; y: number } | null>(null);
+  const [asTable, setAsTable] = useState(false);
   const GUTTER = size.width && size.width < 900 ? 150 : 208;
 
   const items = useMemo(() => layerItems(companies, attribution), [companies, attribution]);
@@ -156,6 +158,19 @@ export function StackView() {
   return (
     <section aria-labelledby="stack-title" className="px-4 pb-6 pt-4">
       <div className="mb-3 flex flex-wrap items-baseline gap-x-6 gap-y-1">
+        <div role="radiogroup" aria-label="Display" className="order-last ml-auto flex border border-rule">
+          {(["Map", "Table"] as const).map((v) => (
+            <button
+              key={v}
+              role="radio"
+              aria-checked={asTable === (v === "Table")}
+              onClick={() => setAsTable(v === "Table")}
+              className={`px-2 py-0.5 font-cond text-[12px] ${asTable === (v === "Table") ? "bg-ink text-surface" : "text-ink-2"}`}
+            >
+              {v}
+            </button>
+          ))}
+        </div>
         <h1 id="stack-title" className="font-cond text-[18px] font-semibold text-ink">
           The AI stack, power to applications
         </h1>
@@ -174,8 +189,10 @@ export function StackView() {
         </p>
       </div>
 
+      {asTable && snap && <StackTable items={items} layers={snap.layers} />}
       <div
         ref={ref}
+        hidden={asTable}
         className="relative"
         style={{ height: isLoading ? height : bands.length ? bands[bands.length - 1].y + bands[bands.length - 1].h : height }}
         onKeyDown={onKey}

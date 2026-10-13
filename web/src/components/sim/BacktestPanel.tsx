@@ -1,7 +1,7 @@
 import { extent } from "d3-array";
 import { scaleLinear } from "d3-scale";
 import { useMemo, useState } from "react";
-import { useAnalytics, useBacktests } from "../../data/api";
+import { useBacktests } from "../../data/api";
 import type { Marked } from "../../data/derived";
 import { replay, score, summarize } from "../../engine/backtest";
 import type { EngineNode, ModelParams } from "../../engine/types";
@@ -33,7 +33,6 @@ export function BacktestPanel({
   byId: Map<string, Marked>;
 }) {
   const { data: bt, error } = useBacktests();
-  const { data: analytics } = useAnalytics();
   const [eventId, setEventId] = useState<string | null>(null);
   const [window, setWindow] = useState("1");
   const [hover, setHover] = useState<{ id: string; x: number; y: number } | null>(null);
@@ -42,12 +41,12 @@ export function BacktestPanel({
   const ev = bt?.events.find((e) => e.id === (eventId ?? bt.events[0]?.id));
   const scored = useMemo(() => {
     if (!ev) return null;
-    return score(replay(ev, nodes, edges, params, analytics?.beta ?? {}), ev, window);
-  }, [ev, nodes, edges, params, analytics, window]);
+    return score(replay(ev, nodes, edges, params), ev, window);
+  }, [ev, nodes, edges, params, window]);
   const all = useMemo(() => {
     if (!bt) return [];
-    return bt.events.flatMap((e) => score(replay(e, nodes, edges, params, analytics?.beta ?? {}), e, window).rows);
-  }, [bt, nodes, edges, params, analytics, window]);
+    return bt.events.flatMap((e) => score(replay(e, nodes, edges, params), e, window).rows);
+  }, [bt, nodes, edges, params, window]);
 
   if (error) return <p className="text-down">Backtest data unavailable: {String(error)}</p>;
   if (!bt || !ev || !scored) return <div className="h-64 animate-pulse bg-sunken" />;
@@ -171,8 +170,8 @@ export function BacktestPanel({
       </p>
       <p className="text-[11px] text-ink-3">
         Points on the dashed diagonal would be perfect predictions. Replays use only relationships whose evidence is dated on or
-        before the event, and market caps from the prior close; revenue and share counts are today's (a known look-ahead in the
-        exposure denominators). Event windows also contain unrelated news — a small sample, so read this as a sanity check, not
+        before the event, market caps from the prior close and revenue as of the build; the empirical beta channel is off (today's
+        betas would be look-ahead). Share counts are today's. Event windows also contain unrelated news — a small sample, so read this as a sanity check, not
         proof.
       </p>
     </div>

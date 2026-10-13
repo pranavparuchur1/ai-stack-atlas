@@ -1,5 +1,5 @@
 import { useMemo } from "react";
-import { useLineage } from "../data/api";
+import { useHistoryIndex, useLineage } from "../data/api";
 import { useMarked } from "../data/derived";
 import { ago } from "../lib/format";
 import { useElementSize } from "../lib/useElementSize";
@@ -85,6 +85,7 @@ function LineageGraph({ lin, width }: { lin: Lineage; width: number }) {
 
 export default function HealthView() {
   const { data: lin, error } = useLineage();
+  const { data: hist } = useHistoryIndex();
   const { data: snap, companies } = useMarked();
   const [ref, size] = useElementSize<HTMLDivElement>();
   if (error) return <p className="p-6 text-down">lineage.json unavailable: {String(error)}</p>;
@@ -178,6 +179,27 @@ export default function HealthView() {
                 ))}
               </tbody>
             </table>
+          </div>
+          <div>
+            <h2 className="mb-1 font-cond text-[14px] font-semibold">Daily snapshots</h2>
+            <p className="text-ink-2">
+              {hist ? `${hist.dates.length} day${hist.dates.length === 1 ? "" : "s"} archived` : "—"}
+              {hist && hist.dates.length > 0 && (
+                <span className="num text-ink-3">
+                  {" "}
+                  ({hist.dates[0]} → {hist.dates.at(-1)})
+                </span>
+              )}
+            </p>
+            <ul className="mt-1 flex flex-wrap gap-x-3 gap-y-0.5 text-[12px]">
+              {hist?.dates.slice(-8).reverse().map((d) => (
+                <li key={d}>
+                  <a className="num text-focus underline" href={`${import.meta.env.BASE_URL}data/history/${d}.json`} download>
+                    {d}.json
+                  </a>
+                </li>
+              ))}
+            </ul>
           </div>
           <div>
             <h2 className="mb-1 font-cond text-[14px] font-semibold">Recent runs</h2>

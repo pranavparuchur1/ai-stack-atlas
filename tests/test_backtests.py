@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import json
 from datetime import date
+from pathlib import Path
 
 import pandas as pd
 import pytest
@@ -27,6 +28,14 @@ def test_window_returns_from_prior_close() -> None:
     assert window_returns(s, date(2026, 5, 1))[0] is None  # no close before the event
     short = window_returns(s, date(2026, 6, 1))[1]
     assert short["1"] is not None and short["3"] is None
+
+
+def test_spec_hash_tracks_edges(project: Path) -> None:
+    _, before = load_events(project / "data" / "backtest_events.yaml")
+    edges = project / "data" / "edges.yaml"
+    edges.write_text(edges.read_text(encoding="utf-8") + "\n# changed\n", encoding="utf-8")
+    _, after = load_events(project / "data" / "backtest_events.yaml")
+    assert before != after
 
 
 def test_real_event_specs_load() -> None:

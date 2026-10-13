@@ -164,34 +164,42 @@ How much a 1.0 move in company *F* moves neighbour *T* through one cited edge:
 ## 5. Backtests
 
 Three verified 2026 events (`data/backtest_events.yaml`), replayed **without look-ahead**: only
-edges with `evidence_date ≤ event date`, market caps from the prior close. Predictions are
+edges with `evidence_date ≤ event date`, market caps from the prior close, and the empirical
+beta channel switched off (betas are estimated on returns *after* these events, so using them
+would be look-ahead). All replay inputs are frozen in `backtests.json`, which is rebuilt only
+when the events, edges, companies or private valuations change. Predictions are
 compared with **market-adjusted returns** (stock − SPY) over 1, 3 and 5 sessions, against a
 **do-nothing baseline** that predicts 0% for every company.
 
 Results with the default parameters (companies the model moved that are listed):
 
+<!-- backtest:start -->
 | Event | Window | n | Model MAE | Do-nothing MAE | Direction right | Spearman ρ |
 |---|---|---|---|---|---|---|
-| Anthropic Series H at $965B | 1d | 20 | 1.64% | 1.65% | 75% | 0.34 |
-| OpenAI raises $110B at $730B pre-money | 1d | 24 | 4.57% | 4.04% | 9% | −0.45 |
-| Alphabet raises 2026 capex guidance | 1d | 10 | 1.58% | 1.96% | 100% | 0.77 |
-| **Pooled** | 1d | 54 | 2.93% | 2.77% | 45% | 0.00 |
-| **Pooled** | 3d | 54 | 7.79% | 7.59% | 41% | 0.09 |
-| **Pooled** | 5d | 54 | 8.46% | 8.46% | 50% | 0.07 |
+| Anthropic Series H at $965B | 1d | 20 | 1.64% | 1.65% | 83% | 0.34 |
+| OpenAI raises $110B at $730B pre-money | 1d | 24 | 4.57% | 4.04% | 9% | −0.41 |
+| Alphabet raises 2026 capex guidance | 1d | 10 | 1.58% | 1.96% | 100% | 0.78 |
+| **Pooled** | 1d | 54 | 2.93% | 2.77% | 45% | 0.02 |
+| **Pooled** | 3d | 54 | 7.79% | 7.59% | 40% | 0.08 |
+| **Pooled** | 5d | 54 | 8.46% | 8.46% | 50% | 0.06 |
+<!-- backtest:end -->
+
+_Generated from the committed snapshot by `npm run backtest:report` (web/); a test fails if this table drifts._
 
 **Reading this honestly**
 
 * The model **does not beat doing nothing** on pooled error. Its predicted moves are small
   (tenths of a percent) against event-window noise of several percent.
 * The **capex shock** is the one case with real signal: on the first session every supplier moved
-  in the predicted direction and the ranking correlates (ρ = 0.77, n = 10).
+  in the predicted direction and the ranking correlates (ρ = 0.78, n = 10).
 * **Valuation rounds at private labs** carry little next-day information for suppliers: the
   Anthropic round was reported a month earlier; on the OpenAI round, CoreWeave fell 18% the next
   day while the model predicted a small gain.
 * `valuation_to_demand` was lowered from 0.5 → 0.1 after these runs (0.05–0.1 scored best).
   That is calibration on the evaluation set — with n = 3 events, treat all of this as a sanity
   check, not validation.
-* Known look-ahead in the replay: revenue and share counts are today's.
+* Remaining look-ahead in the replay: revenue (TTM as of the build) and share counts are not
+  point-in-time.
 
 ## 5b. Value flow
 

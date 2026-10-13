@@ -181,6 +181,14 @@ describe("propagate", () => {
     expect(assumptionsOf(fab.contributions[0]).join(" ")).toMatch(/assumed 2%/);
   });
 
+  it("counts only the strongest of several edges between the same pair and mechanism", () => {
+    const dup = [...edges, edge("cloud", "lab", "distribution_partnership")]; // weak, assumption-based
+    const r = propagate({ companyId: "lab", type: "ipo", valuationUsd: 1500 }, nodes, dup, P);
+    const cloud = r.impacts.find((i) => i.id === "cloud")!;
+    expect(cloud.graphPct).toBeCloseTo(0.025 + 0.125); // unchanged by the extra edge
+    expect(cloud.contributions.filter((c) => c.kind === "demand")).toHaveLength(1);
+  });
+
   it("zero-size scenarios produce no impacts", () => {
     expect(sourceSignals({ companyId: "lab", type: "valuation_change" }, nodes.get("lab")!, P).move).toBe(0);
     expect(propagate({ companyId: "lab", type: "valuation_change", pct: 0 }, nodes, edges, P).impacts).toEqual([]);

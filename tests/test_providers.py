@@ -33,6 +33,19 @@ def test_yfinance_history_and_fx(monkeypatch: pytest.MonkeyPatch) -> None:
     assert p.history([], date(2026, 1, 1), date(2026, 1, 2)).empty
 
 
+def test_yfinance_retries_symbols_missing_from_a_batch(monkeypatch: pytest.MonkeyPatch) -> None:
+    calls: list[list[str]] = []
+
+    def flaky(symbols: list[str], **_: Any) -> pd.DataFrame:
+        calls.append(list(symbols))
+        return _fake_download([s for s in symbols if s != "META"] if len(symbols) > 1 else symbols)
+
+    monkeypatch.setattr(yfp.yf, "download", flaky)
+    h = yfp.YFinanceProvider().history(["NVDA", "META"], date(2026, 10, 12), date(2026, 10, 13))
+    assert calls == [["NVDA", "META"], ["META"]]
+    assert set(h["ticker"]) == {"NVDA", "META"}
+
+
 def test_yfinance_empty_download(monkeypatch: pytest.MonkeyPatch) -> None:
     monkeypatch.setattr(yfp.yf, "download", lambda *a, **k: pd.DataFrame())
     assert yfp.YFinanceProvider().history(["X"], date(2026, 1, 1), date(2026, 1, 2)).empty

@@ -76,6 +76,10 @@ export function propagate(
       const from = nodes.get(f.id)!;
       const allowed = new Set((Object.keys(f.signals) as Mechanism[]).filter((m) => f.signals[m] !== 0));
       if (!allowed.size) continue;
+      // Several cited edges can link the same pair (e.g. a compute contract AND a distribution deal).
+      // They describe one commercial relationship, so per (neighbour, mechanism) only the strongest
+      // step counts - summing them would double count, especially when weak ones rest on assumptions.
+      const best = new Map<string, Contribution>();
       for (const e of adj.get(f.id) ?? []) {
         const nid = other(e, f.id);
         const to = nodes.get(nid);
@@ -83,9 +87,15 @@ export function propagate(
         for (const step of stepsVia(e, from, to, p, allowed)) {
           const pct = f.signals[step.mechanism] * step.weight * factor;
           if (Math.abs(pct) < 1e-7) continue;
-          if (!arrivals.has(nid)) arrivals.set(nid, []);
-          arrivals.get(nid)!.push({ path: [...f.path, step], pct, kind: step.mechanism });
+          const key = `${nid}|${step.mechanism}`;
+          const prev = best.get(key);
+          if (!prev || Math.abs(pct) > Math.abs(prev.pct)) best.set(key, { path: [...f.path, step], pct, kind: step.mechanism });
         }
+      }
+      for (const [key, c] of best) {
+        const nid = key.split("|")[0];
+        if (!arrivals.has(nid)) arrivals.set(nid, []);
+        arrivals.get(nid)!.push(c);
       }
     }
     const next: Frontier[] = [];

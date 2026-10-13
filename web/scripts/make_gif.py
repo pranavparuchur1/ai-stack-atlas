@@ -1,4 +1,7 @@
-"""Assemble hero frames into docs/assets/hero.gif (run with: uv run --with pillow python web/scripts/make_gif.py <frames> <out>)."""
+"""Assemble hero frames into docs/assets/hero.gif.
+
+Run with: uv run --with pillow python web/scripts/make_gif.py <frames> <out> [width]
+"""
 
 import sys
 from pathlib import Path

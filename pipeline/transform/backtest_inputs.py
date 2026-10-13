@@ -24,10 +24,20 @@ BENCHMARK = "SPY"
 WINDOWS = (1, 3, 5)
 
 
+# Curated inputs a replay depends on: changing any of them (e.g. an evidence date) must rebuild the
+# cached backtest inputs, because the set of edges known on each event date is computed here.
+DEPENDS_ON = ("backtest_events.yaml", "edges.yaml", "companies.yaml", "private_valuations.yaml")
+
+
 def load_events(path: Path) -> tuple[list[BacktestEventSpec], str]:
     raw = path.read_text(encoding="utf-8")
     events = [BacktestEventSpec(**e) for e in (yaml.safe_load(raw) or {}).get("events", [])]
-    return events, hashlib.sha256(raw.encode()).hexdigest()[:16]
+    h = hashlib.sha256()
+    for name in DEPENDS_ON:
+        f = path.parent / name
+        if f.exists():
+            h.update(f.read_bytes().replace(b"\r\n", b"\n"))
+    return events, h.hexdigest()[:16]
 
 
 def window_returns(

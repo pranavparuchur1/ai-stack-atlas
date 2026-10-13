@@ -11,7 +11,8 @@
     "typecheck": "tsc -b",
     "test": "vitest run",
     "test:e2e": "playwright test",
-    "types": "node scripts/gen-types.mjs"
+    "types": "node scripts/gen-types.mjs",
+    "backtest:report": "vitest run src/engine/backtest.docs.test.ts"
   },
   "dependencies": {
     "@tanstack/react-query": "^5.104.2",

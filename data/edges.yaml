@@ -251,9 +251,9 @@ edges:
     magnitude_usd: 300000000000
     magnitude_basis: contract_total
     confidence: credible_press
-    evidence_url: https://www.cnbc.com/2025/10/15/a-guide-to-1-trillion-worth-of-ai-deals-between-openai-nvidia.html
+    evidence_url: https://techcrunch.com/2025/09/10/openai-and-oracle-reportedly-ink-historic-cloud-computing-deal/
     evidence_date: 2025-09-10
-    notes: ~$300B of compute over ~5 years starting 2027 (first reported by WSJ 2025-09-10 alongside Oracle's RPO disclosure; later confirmed by OpenAI per CNBC). Part of Stargate's 4.5 GW Oracle expansion.
+    notes: ~$300B of compute over ~5 years starting 2027, first reported by the WSJ alongside Oracle's RPO disclosure (TechCrunch, 2025-09-10); OpenAI later confirmed the figure (https://www.cnbc.com/2025/10/15/a-guide-to-1-trillion-worth-of-ai-deals-between-openai-nvidia.html). Part of Stargate's 4.5 GW Oracle expansion.
 
   - source_id: msft
     target_id: openai
@@ -440,7 +440,7 @@ edges:
     magnitude_basis: contract_total
     confidence: reported
     evidence_url: https://www.sec.gov/Archives/edgar/data/0002021728/000162828026033143/cerebras-sx1a2.htm
-    evidence_date: 2026-01-14
+    evidence_date: 2026-05-11
     notes: 750 MW of Cerebras compute through 2028. Initially reported as >$10B (https://www.cnbc.com/2026/01/14/cerebras-scores-openai-deal-worth-over-10-billion.html); Cerebras's S-1/A describes it as valued at more than $20B. OpenAI also extended a $1B working-capital loan.
 
   - source_id: nvda
@@ -611,7 +611,7 @@ edges:
     stake_pct: null
     confidence: reported
     evidence_url: https://www.sec.gov/Archives/edgar/data/0001835632/000119312526356217/d412696d8k.htm
-    evidence_date: 2026-08-18
+    evidence_date: 2026-08-19
     notes: Warrant for up to 58,970,907 Marvell shares at $206.58 (~$12.2B notional), mostly vesting one tranche per $500M of Google custom-silicon purchases through FY2033. Contingent, so stake_pct is null.
 
   - source_id: mrvl
@@ -635,7 +635,7 @@ edges:
     supplier_revenue_share: 0.21
     confidence: reported
     evidence_url: https://www.sec.gov/Archives/edgar/data/1596532/000159653224000043/anet-20231231.htm
-    evidence_date: 2024-02-12
+    evidence_date: 2024-02-13
     notes: Meta was 21% of Arista revenue in FY2023 (26% FY2022). Arista stopped naming customers after FY2023, so this is the latest named share.
 
   - source_id: anet
@@ -647,7 +647,7 @@ edges:
     supplier_revenue_share: 0.18
     confidence: reported
     evidence_url: https://www.sec.gov/Archives/edgar/data/1596532/000159653224000043/anet-20231231.htm
-    evidence_date: 2024-02-12
+    evidence_date: 2024-02-13
     notes: Microsoft was 18% of Arista revenue in FY2023 (latest year customers were named).
 
   - source_id: apld
@@ -658,7 +658,7 @@ edges:
     magnitude_basis: contract_total
     confidence: reported
     evidence_url: https://ir.applieddigital.com/news-events/press-releases/detail/128/applied-digital-finalizes-additional-150mw-lease-with
-    evidence_date: 2025-08-28
+    evidence_date: 2025-08-29
     notes: 400 MW across three ~15-year leases at Polaris Forge 1 (Ellendale, ND); ~$11B anticipated aggregate lease revenue.
 
   - source_id: glw
@@ -712,9 +712,9 @@ edges:
     magnitude_usd: null
     magnitude_basis: null
     confidence: estimated
-    evidence_url: https://www.theglobeandmail.com/investing/markets/stocks/CLS/pressreleases/37302247/celestica-cls-q4-2025-earnings-call-transcript/
-    evidence_date: 2026-01-29
-    notes: Celestica is a preferred manufacturing partner for Google TPU systems and is expanding US capacity for them. Its top customer was 32% of 2025 revenue but is unnamed, so no share is attributed to Google.
+    evidence_url: https://corporate.celestica.com/news-releases/news-release-details/celestica-announces-fourth-quarter-and-fy-2025-financial-results
+    evidence_date: 2026-01-28
+    notes: Celestica describes itself as a preferred manufacturing partner for Google's TPU systems and is expanding US and Southeast Asia capacity for them (FY2025 results). Its top customer was 32% of 2025 revenue but is unnamed, so no share is attributed to Google.
 
   - source_id: crdo
     target_id: amzn
@@ -780,7 +780,7 @@ edges:
     magnitude_basis: null
     confidence: reported
     evidence_url: https://news.skhynix.com/en/skhynix-nvidia-partnership-2026/
-    evidence_date: 2026-06-01
+    evidence_date: 2026-07-25
     notes: SK Group / NVIDIA partnership covering next-generation memory supply; SK hynix is NVIDIA's primary HBM supplier (HBM3E for Blackwell, HBM4 for Rubin). Volumes and value not disclosed.
 
   - source_id: mu
@@ -813,7 +813,7 @@ edges:
     magnitude_basis: null
     confidence: credible_press
     evidence_url: https://www.koreaherald.com/article/10819286
-    evidence_date: 2026-09-01
+    evidence_date: 2026-07-24
     notes: Korean press reports Samsung was designated primary HBM4 supplier for AMD MI455X (Helios). Not exclusive; share undisclosed.
 
   - source_id: samsung
@@ -858,7 +858,7 @@ edges:
     magnitude_basis: null
     confidence: reported
     evidence_url: https://www.sec.gov/Archives/edgar/data/2021728/000162828026033143/cerebras-sx1a2.htm
-    evidence_date: 2026-05-01
+    evidence_date: 2026-05-11
     notes: Cerebras's S-1/A - TSMC is the source of its entire wafer supply (WSE-3 on TSMC 5nm), with no long-term allocation commitment.
 
   - source_id: intc
@@ -905,7 +905,7 @@ edges:
     magnitude_basis: null
     confidence: reported
     evidence_url: https://www.sec.gov/Archives/edgar/data/707549/000070754925000075/lrcx-20250629.htm
-    evidence_date: 2025-08-08
+    evidence_date: 2025-08-11
     notes: Lam's FY2025 10-K names Samsung and TSMC as its most significant customers; per-customer percentages are disclosed unnamed, so no share is recorded.
 
   - source_id: lrcx
@@ -916,7 +916,7 @@ edges:
     magnitude_basis: null
     confidence: reported
     evidence_url: https://www.sec.gov/Archives/edgar/data/707549/000070754925000075/lrcx-20250629.htm
-    evidence_date: 2025-08-08
+    evidence_date: 2025-08-11
     notes: Named most-significant customer in Lam's FY2025 10-K (percentage not attributed by name).
 
   - source_id: klac
@@ -936,11 +936,10 @@ edges:
     direction: supplies_to
     magnitude_usd: null
     magnitude_basis: null
-    supplier_revenue_share: 0.145
     confidence: reported
     evidence_url: https://www.tel.com/ir/library/ar/egp82m00000000h7-att/ir2024_data_section_en.pdf
-    evidence_date: 2024-08-01
-    notes: TSMC was 14.5% of Tokyo Electron net sales in FY2023 (year to March 2023), the latest year we could attribute cleanly.
+    evidence_date: 2023-03-31
+    notes: Named among Tokyo Electron's major customers in its 2024 integrated report data section. Revenue shares in that table could not be verified first-hand (encrypted PDF), so none are recorded; date is the fiscal year-end covered.
 
   - source_id: tel
     target_id: intc
@@ -948,11 +947,10 @@ edges:
     direction: supplies_to
     magnitude_usd: null
     magnitude_basis: null
-    supplier_revenue_share: 0.162
     confidence: reported
     evidence_url: https://www.tel.com/ir/library/ar/egp82m00000000h7-att/ir2024_data_section_en.pdf
-    evidence_date: 2024-08-01
-    notes: Intel was 16.2% of Tokyo Electron net sales in FY2023 (year to March 2023).
+    evidence_date: 2023-03-31
+    notes: Named among Tokyo Electron's major customers in its 2024 integrated report data section. Revenue shares not recorded (could not be verified first-hand); date is the fiscal year-end covered.
 
   - source_id: tel
     target_id: samsung
@@ -960,11 +958,10 @@ edges:
     direction: supplies_to
     magnitude_usd: null
     magnitude_basis: null
-    supplier_revenue_share: 0.125
     confidence: reported
     evidence_url: https://www.tel.com/ir/library/ar/egp82m00000000h7-att/ir2024_data_section_en.pdf
-    evidence_date: 2024-08-01
-    notes: Samsung was 12.5% of Tokyo Electron net sales in FY2023 (year to March 2023).
+    evidence_date: 2023-03-31
+    notes: Named among Tokyo Electron's major customers in its 2024 integrated report data section. Revenue shares not recorded (could not be verified first-hand); date is the fiscal year-end covered.
 
   - source_id: asml
     target_id: intc
@@ -1018,7 +1015,7 @@ edges:
     magnitude_basis: null
     confidence: reported
     evidence_url: https://www.cadence.com/en_US/home/company/newsroom/press-releases/pr/2026/cadence-and-nvidia-expand-partnership-to-reinvent-engineering.html
-    evidence_date: 2026-04-14
+    evidence_date: 2026-04-15
     notes: Expanded partnership integrating Cadence EDA/system design with NVIDIA CUDA-X and Omniverse; NVIDIA is also a long-standing Cadence EDA user. No equity or contract value disclosed.
 
   - source_id: arm
@@ -1220,7 +1217,7 @@ edges:
     stake_pct: 0.111
     confidence: reported
     evidence_url: https://www.sec.gov/Archives/edgar/data/0000937966/000162828026011378/asml-20251231.htm
-    evidence_date: 2025-12-31
+    evidence_date: 2026-02-25
     notes: ASML invested EUR 1.3B leading Mistral's Series C (Sep 2025, https://www.asml.com/news/press-releases/2025/asml-mistral-ai-enter-strategic-partnership) and held ~11.1% fully diluted at 2025-12-31 per its 20-F; diluted somewhat by the Sep-2026 Series D. EUR amount kept out of magnitude_usd to avoid an FX-dated conversion.
 
   - source_id: samsung
@@ -1312,9 +1309,9 @@ edges:
     magnitude_usd: null
     magnitude_basis: null
     confidence: reported
-    evidence_url: https://cohere.com/customer-stories/oracle
-    evidence_date: 2024-06-01
-    notes: Cohere models power 100+ generative-AI use cases in Oracle Fusion Applications and are offered in the OCI Generative AI service.
+    evidence_url: https://docs.cohere.com/changelog/2025-05-14-oci-models-release-notes
+    evidence_date: 2025-05-14
+    notes: Cohere Command, Rerank and Embed models offered in the OCI Generative AI service (May 2025 release notes); Cohere also powers generative-AI features in Oracle Fusion Applications.
 
   # ---------------------------------------------------------------- more power
   - source_id: gev

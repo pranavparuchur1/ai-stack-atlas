@@ -20,3 +20,5 @@ export const useLineage = () =>
 export const useBacktests = () => useQuery({ queryKey: ["backtests"], queryFn: () => getJson<Backtests>("backtests.json") });
 export const useModelParams = () =>
   useQuery({ queryKey: ["model"], queryFn: () => getJson<ModelParams>("model.json"), staleTime: Infinity });
+export const useHistoryIndex = () =>
+  useQuery({ queryKey: ["history"], queryFn: () => getJson<{ dates: string[] }>("history/index.json") });
