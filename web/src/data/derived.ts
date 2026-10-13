@@ -10,13 +10,15 @@ export interface Marked extends SnapshotCompany {
   /** day change after applying any live tick */
   change: number | null;
   live: boolean;
+  /** direction of the most recent live tick (drives the flash) */
+  tickDir: "up" | "down" | null;
 }
 
 /** Companies with live ticks applied: cap = live price x shares x FX (shares/FX from the snapshot). */
 export function applyLive(snap: Snapshot, live: ReturnType<typeof useLive.getState>["prices"]): Marked[] {
   return snap.companies.map((c) => {
     const t = live[c.id];
-    if (!t || !c.is_public || !c.shares || !c.price) return { ...c, cap: c.market_cap_usd, change: c.day_change_pct, live: false };
+    if (!t || !c.is_public || !c.shares || !c.price) return { ...c, cap: c.market_cap_usd, change: c.day_change_pct, live: false, tickDir: null };
     // live symbols may be ADRs (e.g. SKHY = 0.1 KRX share): scale by the snapshot price ratio on first tick
     const ratio = c.live_symbol && c.live_symbol !== c.ticker ? liveRatio(c) : 1;
     const localPrice = t.price * ratio;
@@ -26,6 +28,7 @@ export function applyLive(snap: Snapshot, live: ReturnType<typeof useLive.getSta
       cap: localPrice * c.shares * (c.fx_usd_per_unit ?? 1),
       change: prevClose ? localPrice / prevClose - 1 : c.day_change_pct,
       live: true,
+      tickDir: t.prev == null || t.prev === t.price ? null : t.price > t.prev ? "up" : "down",
     };
   });
 }

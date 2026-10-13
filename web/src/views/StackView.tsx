@@ -80,7 +80,7 @@ function TileView({ t, layer }: { t: Tile; layer: string }) {
       onFocus={() => hover(c.id)}
       onBlur={() => hover(null)}
       className={`absolute overflow-hidden text-left outline-none transition-[box-shadow] focus-visible:z-10 ${
-        c.live ? (tone(c.change) === "up" ? "flash-up" : "flash-down") : ""
+        c.tickDir === "up" ? "flash-up" : c.tickDir === "down" ? "flash-down" : ""
       }`}
       style={{
         left: t.x,
@@ -91,8 +91,7 @@ function TileView({ t, layer }: { t: Tile; layer: string }) {
         border: `1px ${c.is_public ? "solid" : "dashed"} color-mix(in srgb, ${layerVar(layer)} 70%, var(--ink-3))`,
         boxShadow: selected || related ? "inset 0 0 0 2px var(--ink)" : undefined,
       }}
-      key={c.live ? `${c.id}-${c.cap}` : c.id}
-    >
+          >
       {big && (
         <span className="flex h-full flex-col justify-between p-1.5">
           <span className="truncate font-cond text-[12px] font-medium leading-tight text-ink">
@@ -207,7 +206,7 @@ export function StackView() {
               </div>
               <div className="absolute inset-y-0 right-0" style={{ left: GUTTER }}>
                 {b.tiles.map((t) => (
-                  <TileView key={t.item.key} t={t} layer={b.layer.id} />
+                  <TileView key={t.item.company.live ? `${t.item.key}:${t.item.company.cap}` : t.item.key} t={t} layer={b.layer.id} />
                 ))}
               </div>
             </div>

@@ -208,7 +208,7 @@ def run_pipeline(
             cap_by_id = {str(r["company_id"]): float(r["market_cap_usd"]) for r in records(marks)}
             layer_order = {l.id: l.order for l in cur.layers}
             order = [
-                c.id for c in sorted(cur.companies, key=lambda c: (layer_order[c.primary_layer], -cap_by_id[c.id]))
+                c.id for c in sorted(cur.companies, key=lambda c: (-layer_order[c.primary_layer], -cap_by_id[c.id]))
             ]
             layer_ids = [l.id for l in sorted(cur.layers, key=lambda l: l.order)]
             closes = prices_fx.pivot_table(index="date", columns="company_id", values="close")

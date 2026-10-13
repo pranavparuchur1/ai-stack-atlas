@@ -6,6 +6,7 @@ import { useUi, type Theme } from "../state/store";
 import { TickerTape } from "./TickerTape";
 import { StatusPill } from "./StatusPill";
 import { CompanyDrawer } from "./CompanyDrawer";
+import { LiveSettings } from "./LiveSettings";
 
 const NAV = [
   { to: "/", label: "Stack", end: true },
@@ -128,6 +129,7 @@ export function AppShell({ children }: { children: ReactNode }) {
         {children}
       </main>
       <CompanyDrawer />
+      <LiveSettings />
       <footer className="border-t border-rule px-4 py-2 text-[11px] text-ink-3">
         <span className="text-ink-2">Illustrative model, not a forecast or financial advice.</span>{" "}
         {snap && (
